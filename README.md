@@ -10,6 +10,7 @@ You can check the default python version installed in your machine by opening te
 ```
 python --version
 ```
+* Install interface font: [Atkinson Hyperlegible](https://brailleinstitute.org/freefont)
 
 ### Installing packages
 * Open terminal in any directory you like
