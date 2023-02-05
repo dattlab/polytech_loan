@@ -1443,5 +1443,5 @@ class Ui_MainWindow(object):
         self.purposeSummDisplay.setText(_translate("MainWindow", "Purpose here"))
         self.applyConfirmBtn_2.setText(_translate("MainWindow", "Cancel"))
         self.applyConfirmBtn_3.setText(_translate("MainWindow", "Confirm"))
-import ui.applogo_rc
-import ui.puplogo_rc
+import ui.resources.applogo_rc
+import ui.resources.puplogo_rc
