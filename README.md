@@ -2,7 +2,7 @@
 
 ### Requirements
 * See `requirements.txt`
-* Python <=3.9.X
+* Python <=3.9.X. Install the latest 3.9 version [here](https://www.python.org/downloads/release/python-3913/)
 
 > :warning: PyQt5 (one of the requirements) would not install properly in Python versions >3.10 so better install the required version and just create a virtual environment
 
@@ -33,7 +33,7 @@ python --version
 	```
 	C:\Users\YourUsername\...\polytech_loan> .\venv\Scripts\activate
 	```
-* You must see a `(venv)` in the prompt.
+* You should see a `(venv)` in the prompt:
 * Check the Python version. It should be 3.9.X:
 	```
 	(venv) C:\Users\YourUsername\...\polytech_loan> python --version
