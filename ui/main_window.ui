@@ -2701,10 +2701,7 @@ background-color: rgb(136, 0, 0);</string>
  </widget>
  <resources>
   <include location="resources/puplogo.qrc"/>
-  <include location="resources/header_bg.qrc"/>
   <include location="resources/applogo.qrc"/>
-  <include location="../../../../../../polytech_loan/ui/resources/applogo.qrc"/>
-  <include location="../../../../../../polytech_loan/ui/resources/puplogo.qrc"/>
  </resources>
  <connections/>
 </ui>
