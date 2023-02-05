@@ -53,5 +53,5 @@ python --version
 	```
 * The `.qrc` files in `resources` folder must also be in `.py`:
 	```
-	(venv) C:\Users\YourUsername\...\polytech_loan> pyrcc5 .\ui\resources\xxxx.qrc -o .\ui\xxxx_rc.py
+	(venv) C:\Users\YourUsername\...\polytech_loan> pyrcc5 .\ui\resources\xxxx.qrc -o .\ui\resources\xxxx_rc.py
 	```
