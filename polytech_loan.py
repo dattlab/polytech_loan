@@ -7,6 +7,7 @@ from PyQt5.uic import loadUi
 
 from ui.main_window_ui import Ui_MainWindow
 from utils.error_handlers import *
+from utils.helpers import *
 
 
 class Window(QMainWindow, Ui_MainWindow):
