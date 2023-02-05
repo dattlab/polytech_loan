@@ -1,0 +1,33 @@
+@startuml
+START
+:Display Login Page;
+repeat
+    :Get
+        ""name""
+        ""email""
+        ""student_number""
+        ""college""
+        ""course"";
+repeat while (input in DB?) is (no)
+-> yes;
+
+if (there's pending loan?) then (no)
+    :Ask for loan\n application;
+    repeat
+    :Get
+        ""gwa""
+        ""loan_purpose"";
+    repeat while (""gwa"" < 1.75?) is (yes)
+    -> no;
+    repeat
+    :Get
+        ""payment_duration""
+        ""loan_amount"";
+    repeat while (""loan_amount"" > ""max_amount"") is (yes)
+    -> no;
+    :Display loan\n summary details;
+else (yes)
+    :Display\nloan status;
+endif
+END
+@enduml

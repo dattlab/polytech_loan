@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="pupLogo">
+    <file>pup_logo.png</file>
+  </qresource>
+</RCC>
