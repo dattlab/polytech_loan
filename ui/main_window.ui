@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>731</width>
+    <width>1522</width>
     <height>641</height>
    </rect>
   </property>
@@ -286,6 +286,12 @@
               </item>
               <item>
                <widget class="QComboBox" name="collegeComboBox">
+                <property name="maximumSize">
+                 <size>
+                  <width>511</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="font">
                  <font>
                   <family>Atkinson Hyperlegible</family>
@@ -301,6 +307,12 @@
               </item>
               <item>
                <widget class="QComboBox" name="courseComboBox">
+                <property name="maximumSize">
+                 <size>
+                  <width>511</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="font">
                  <font>
                   <family>Atkinson Hyperlegible</family>
