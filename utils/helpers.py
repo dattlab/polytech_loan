@@ -11,6 +11,12 @@ def exceedsMaxAmount():
     pass
 
 
+def determineHonor(gwa):
+    if gwa >= 1.5:
+        return "President's Lister"
+    return "Dean's Lister"
+
+
 def createPdf(filePath):
     pdf = FPDF()
     pdf.set_font(INTERFACE_FONT, size=15)
