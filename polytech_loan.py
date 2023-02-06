@@ -134,7 +134,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 desiredAmount = float(desiredAmount)
                 interestAmount = desiredAmount * interestRate
                 totalDebt = desiredAmount + interestAmount
-                monthlyPayment = totalDebt / paymentDuration
+                monthlyPayment = round(totalDebt / paymentDuration, 2)
                 updateDB(
                     self.studentNumLabel.text(),
                     ("loanAmount", desiredAmount),
