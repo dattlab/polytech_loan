@@ -1,3 +1,4 @@
+import json
 import re
 
 
@@ -8,15 +9,34 @@ def isNotEmpty(*args):
     return True
 
 
-def isInDB():
-    # TODO: Check DB function
+def isInDB(studentNumber):
+    with open("data.json", "r") as f:
+        accounts = json.load(f)
+    if studentNumber in accounts:
+        return True
     return False
 
 
+def noLoan(studentNumber):
+    with open("data.json", "r") as f:
+        data = json.load(f)
+    if data[studentNumber]["loanAmount"] is None:
+        return True
+    return False
+
+
+def validCredentials(studentNumber, *args):
+    with open("data.json", "r") as f:
+        accounts = json.load(f)
+    for a in args:
+        if accounts[studentNumber][a[0]] != a[1]:
+            return False
+    return True
+
+
 def gwaAccepted(gwa):
-    if gwa in {1.0, 1.25, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 4.0, 5.0}:
-        if 1.75 >= gwa >= 1.0:
-            return True
+    if 1.75 >= gwa >= 1.0:
+        return True
     return False
 
 

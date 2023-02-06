@@ -6,7 +6,8 @@ from utils.constants import (
     APPLY_SUCCESS_DIALOG_UI,
     APPLY_REJECTED_DIALOG_UI,
     EXCEED_MAX_AMOUNT_DIALOG_UI,
-    INVALID_EMAIL_DIALOG_UI
+    INVALID_EMAIL_DIALOG_UI,
+    INVALID_CRED_DIALOG_UI
 )
 
 
@@ -18,6 +19,13 @@ class errorInputDialog(QDialog):
 
     def raiseError(self):
         self.exec()
+
+
+class invalidCredentials(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loadUi(INVALID_CRED_DIALOG_UI, self)
+        self.pushButton.clicked.connect(self.close)
 
 
 class applySuccessDialog(QDialog):

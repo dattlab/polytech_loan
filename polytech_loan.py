@@ -37,12 +37,21 @@ class Window(QMainWindow, Ui_MainWindow):
         course = self.courseComboBox.currentText()
         if isNotEmpty(name, email, studentNum):
             if isValidEmail(email):
-                self.nameLabel.setText(name)
-                self.studentNumLabel.setText(studentNum)
-                self.courseLabel.setText(course)
-                if isInDB():
-                    self.displayLoanStatus()
-                    self.gotoDashboard()
+                if os.path.exists("data.json") and isInDB(studentNum):
+                    if validCredentials(studentNum, ("name", name), ("email", email), ("college", college), ("course", course)):
+                        if noLoan(studentNum):
+                            self.nameLabel.setText(name)
+                            self.studentNumLabel.setText(studentNum)
+                            self.courseLabel.setText(course)
+                            self.gotoEmptyDashboard()
+                        else:
+                            self.nameLabel_2.setText(name)
+                            self.studentNumLabel_2.setText(studentNum)
+                            self.courseLabel_2.setText(course)
+                            self.gotoDashboard()
+                    else:
+                        invalidCred = invalidCredentials()
+                        invalidCred.exec()
                 else:
                     storeInDB(name, email, studentNum, college, course)
                     self.gotoEmptyDashboard()
@@ -54,9 +63,6 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def gotoEmptyDashboard(self):
         self.stackedWidget.setCurrentWidget(self.noLoanPage)
-
-    def displayLoanStatus(self):
-        ...
 
     def gotoDashboard(self):
         self.stackedWidget.setCurrentWidget(self.withLoanPage)
@@ -73,12 +79,17 @@ class Window(QMainWindow, Ui_MainWindow):
                     ("loanPurpose", loanPurpose),
                     ("honor", determineHonor(gwa))
                 )
+                self.updateType()
                 self.updateApplyPage2()
                 self.stackedWidget.setCurrentWidget(self.applyPage2)
             else:
                 applyRejectedDialog().raiseError()
         else:
             errorInputDialog().raiseError()
+
+    def updateType(self):
+        if 1.50 < float(self.gwaApplyInput.text()) <= 1.75:
+            self.typeLabel.setText("TYPE B")
 
     def updateApplyPage2(self):
         paymentDuration = self.paymentDurationInput.currentText()
