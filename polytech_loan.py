@@ -46,7 +46,7 @@ class Window(QMainWindow, Ui_MainWindow):
     def checkCredentials(self, name, email, studentNum):
         college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
-        if os.path.exists("data.json") and isInDB(studentNum):
+        if os.path.exists(DATA_FILE) and isInDB(studentNum):
             if validCredentials(studentNum, ("name", name), ("email", email), ("college", college), ("course", course)):
                 if noLoan(studentNum):
                     self.renderInfoHeader()
@@ -55,6 +55,7 @@ class Window(QMainWindow, Ui_MainWindow):
                     self.nameLabel_2.setText(name)
                     self.studentNumLabel_2.setText(studentNum)
                     self.courseLabel_2.setText(course)
+                    self.renderDashboardStat()
                     self.gotoDashboard()
             else:
                 invalidCred = invalidCredentials()
@@ -159,8 +160,22 @@ class Window(QMainWindow, Ui_MainWindow):
         self.emailLineEdit.setText("")
         self.studentNumLineEdit.setText("")
 
+    def renderDashboardStat(self):
+        with open(DATA_FILE, "r") as f:
+            data = json.load(f)
+        data = data[self.studentNumLabel.text()]
+        self.gwaDisplay.setText(str(data["gwa"]))
+        self.honorDisplay.setText(data["honor"])
+        self.loanAmountDisplay.setText(str(data["loanAmount"]))
+        self.interestAmountDisplay.setText(str(data["interestAmount"]))
+        self.paymentDurationDisplay.setText(str(data["paymentDuration"]))
+        self.totalDebtDisplay.setText(str(data["totalDebt"]))
+        self.monthPaymentDisplay.setText(str(data["monthlyPayment"]))
+        self.modePaymentDisplay.setText(data["paymentMode"])
+        self.purposeDisplay.setText(data["loanPurpose"])
+
     def renderSummary(self):
-        with open("data.json", "r") as f:
+        with open(DATA_FILE, "r") as f:
             data = json.load(f)
         data = data[self.studentNumLabel.text()]
         self.nameSummDisplay.setText(data["name"])

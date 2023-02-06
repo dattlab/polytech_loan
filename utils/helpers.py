@@ -3,7 +3,7 @@ import os
 
 from fpdf import FPDF
 
-from utils.constants import INTERFACE_FONT
+from utils.constants import INTERFACE_FONT, DATA_FILE
 
 
 def determineHonor(gwa):
@@ -17,7 +17,7 @@ def createPdf(filePath, studentNumber):
     pdf.set_font(INTERFACE_FONT, size=15)
     pdf.add_page()
 
-    with open("data.json", "r") as f:
+    with open(DATA_FILE, "r") as f:
         data = json.load(f)
     data = data[studentNumber]
     pdf.multi_cell(
@@ -47,7 +47,7 @@ def createPdf(filePath, studentNumber):
 
 
 def write_json(newData):
-    with open("data.json", "w") as f:
+    with open(DATA_FILE, "w") as f:
         json.dump(newData, f, indent=4, separators=(",", ": "), sort_keys=True)
 
 
@@ -69,8 +69,8 @@ def storeInDB(*args):
             "loanPurpose": None
         }
     }
-    if os.path.exists("data.json"):
-        with open("data.json", "r") as f:
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r") as f:
             existing_data = json.load(f)
         existing_data[args[2]] = newAccount[args[2]]
         write_json(existing_data)
@@ -79,7 +79,7 @@ def storeInDB(*args):
 
 
 def updateDB(studentNumber, *args):
-    with open("data.json", "r") as f:
+    with open(DATA_FILE, "r") as f:
         data = json.load(f)
 
     for i in args:

@@ -2,6 +2,8 @@ import json
 import os.path
 import re
 
+from utils.constants import DATA_FILE
+
 
 def isNotEmpty(*args):
     for i in args:
@@ -11,7 +13,7 @@ def isNotEmpty(*args):
 
 
 def isInDB(studentNumber):
-    with open("data.json", "r") as f:
+    with open(DATA_FILE, "r") as f:
         accounts = json.load(f)
     if studentNumber in accounts:
         return True
@@ -19,8 +21,8 @@ def isInDB(studentNumber):
 
 
 def noLoan(studentNumber):
-    if os.path.exists("data.json"):
-        with open("data.json", "r") as f:
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r") as f:
             data = json.load(f)
         if data[studentNumber]["loanAmount"] is None:
             return True
@@ -29,7 +31,7 @@ def noLoan(studentNumber):
 
 
 def validCredentials(studentNumber, *args):
-    with open("data.json", "r") as f:
+    with open(DATA_FILE, "r") as f:
         accounts = json.load(f)
     for a in args:
         if accounts[studentNumber][a[0]] != a[1]:
