@@ -1,4 +1,5 @@
 import json
+import os.path
 import re
 
 
@@ -18,11 +19,13 @@ def isInDB(studentNumber):
 
 
 def noLoan(studentNumber):
-    with open("data.json", "r") as f:
-        data = json.load(f)
-    if data[studentNumber]["loanAmount"] is None:
-        return True
-    return False
+    if os.path.exists("data.json"):
+        with open("data.json", "r") as f:
+            data = json.load(f)
+        if data[studentNumber]["loanAmount"] is None:
+            return True
+        return False
+    return True
 
 
 def validCredentials(studentNumber, *args):
