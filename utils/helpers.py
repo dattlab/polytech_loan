@@ -12,34 +12,37 @@ def determineHonor(gwa):
     return "Dean's Lister"
 
 
-def createPdf(filePath):
+def createPdf(filePath, studentNumber):
     pdf = FPDF()
     pdf.set_font(INTERFACE_FONT, size=15)
     pdf.add_page()
+
+    with open("data.json", "r") as f:
+        data = json.load(f)
+    data = data[studentNumber]
     pdf.multi_cell(
         200, 10,
         "**Polytech-Loan**\n" +
         "**Loan Summary Details**\n\n" +
         "                                                   **Iskolar Details**\n" +
-        f"**Name:** \n" +
-        f"**Email:** \n" +
-        f"**Student Number:** \n" +
-        f"**College:** =\n" +
-        f"**Course:** \n" +
-        f"**GWA:** \n" +
-        f"**Honor:** \n\n" +
+        f"**Name:** {data['name']}\n" +
+        f"**Email:** {data['email']}\n" +
+        f"**Student Number:** {studentNumber}\n" +
+        f"**College:** {data['college']}\n" +
+        f"**Course:** {data['course']}\n" +
+        f"**GWA:** {data['gwa']}\n" +
+        f"**Honor:** {data['honor']}\n\n" +
         "                                                   **Loan Details**\n" +
-        f"**Loan amount:** \n" +
-        f"**Interest amount:** \n" +
-        f"**Payment duration:** \n" +
-        f"**Total debt:** \n" +
-        f"**Monthly payment:** \n" +
-        f"**Mode of payment:** \n" +
-        f"**Purpose:** \n\n",
+        f"**Loan amount:** {data['loanAmount']}\n" +
+        f"**Interest amount:** {data['interestAmount']}\n" +
+        f"**Payment duration:** {data['paymentDuration']}\n" +
+        f"**Total debt:** {data['totalDebt']}\n" +
+        f"**Monthly payment:** {data['monthlyPayment']}\n" +
+        f"**Mode of payment:** {data['paymentMode']}\n" +
+        f"**Purpose:** {data['loanPurpose']}\n\n",
         align='L',
         markdown=True
     )
-    print(filePath)
     pdf.output(filePath)
 
 
