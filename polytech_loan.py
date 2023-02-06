@@ -14,7 +14,6 @@ class Window(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-
         self.loginBtn.clicked.connect(self.gotoMainPage)
         self.logOutBtn.clicked.connect(self.gotoLoginPage)
         self.logOutBtn_2.clicked.connect(self.gotoLoginPage)
@@ -24,7 +23,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.applyCancelBtn_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage))
         self.applyConfirmBtn.clicked.connect(self.gotoSummaryPage)
         self.applyCancelBtn_3.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage2))
-        self.applyConfirmBtn_3.clicked.connect(self.raiseApplySuccess)
+        self.applyConfirmBtn_3.clicked.connect(lambda: self.raisApplySuccess())
         self.applySaveCopyBtn.clicked.connect(self.saveToPdf)
 
     def gotoMainPage(self):
@@ -33,15 +32,19 @@ class Window(QMainWindow, Ui_MainWindow):
         studentNum = self.studentNumLineEdit.text()
         course = self.courseComboBox.currentText()
         if isNotEmpty(name, email, studentNum):
-            self.nameLabel.setText(name)
-            self.studentNumLabel.setText(studentNum)
-            self.courseLabel.setText(course)
-            if isInDB():
-                self.gotoDashboard()
+            if isValidEmail(email):
+                self.nameLabel.setText(name)
+                self.studentNumLabel.setText(studentNum)
+                self.courseLabel.setText(course)
+                if isInDB():
+                    self.gotoDashboard()
+                else:
+                    self.gotoEmptyDashboard()
             else:
-                self.gotoEmptyDashboard()
+                invalidEmailError().raiseError()
+                return
         else:
-            self.raiseInputError()
+            errorInputDialog().raiseError()
 
     def gotoEmptyDashboard(self):
         self.stackedWidget.setCurrentWidget(self.noLoanPage)
@@ -56,9 +59,9 @@ class Window(QMainWindow, Ui_MainWindow):
             if isFloat(gwa) and gwaAccepted(float(gwa)):
                 self.stackedWidget.setCurrentWidget(self.applyPage2)
             else:
-                self.raiseApplyRejected()
+                applyRejectedDialog().raiseError()
         else:
-            self.raiseInputError()
+            errorInputDialog().raiseError()
 
     def gotoSummaryPage(self):
         desiredAmount = self.loanAmountInput.text()
@@ -68,9 +71,9 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.renderSummary()
                 self.stackedWidget.setCurrentWidget(self.summaryPage)
             else:
-                self.raiseExceedMaxError()
+                exceedMaxError().raiseError()
         else:
-            self.raiseInputError()
+            errorInputDialog().raiseError()
 
     def gotoLoginPage(self):
         self.clearLoginInput()
@@ -92,22 +95,9 @@ class Window(QMainWindow, Ui_MainWindow):
         createPdf(filePath)
         self.gotoLoginPage()
 
-    def raiseInputError(self):
-        dialog = errorInputDialog(self)
-        dialog.exec()
-
-    def raiseApplySuccess(self):
-        dialog = applySuccessDialog(self)
-        dialog.exec()
+    def raisApplySuccess(self):
+        applySuccessDialog().raiseDialog()
         self.gotoLoginPage()
-
-    def raiseApplyRejected(self):
-        dialog = applyRejectedDialog(self)
-        dialog.exec()
-
-    def raiseExceedMaxError(self):
-        dialog = exceedMaxError(self)
-        dialog.exec()
 
 
 def main() -> None:
