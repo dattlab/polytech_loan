@@ -1,7 +1,5 @@
 import re
 
-from ui.dialogs_ui import invalidEmailError
-
 
 def isNotEmpty(*args):
     for i in args:
