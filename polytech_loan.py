@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QFileDialog, QWidget
+    QApplication, QMainWindow, QFileDialog
 )
 
 from ui.main_window_ui import Ui_MainWindow
@@ -25,6 +25,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.applyCancelBtn_3.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage2))
         self.applyConfirmBtn_3.clicked.connect(lambda: self.raisApplySuccess())
         self.applySaveCopyBtn.clicked.connect(self.saveToPdf)
+
+        self.paymentDurationInput.currentTextChanged.connect(self.updateApplyPage2)
+        self.paymentMethodInput.currentTextChanged.connect(self.updateApplyPage2)
 
     def gotoMainPage(self):
         name = self.nameLineEdit.text()
@@ -63,12 +66,43 @@ class Window(QMainWindow, Ui_MainWindow):
         loanPurpose = self.loanPurposeInput.text()
         if isNotEmpty(gwa, loanPurpose):
             if isFloat(gwa) and gwaAccepted(float(gwa)):
-                updateDB(self.studentNumLabel.text(), ("gwa", gwa), ("loanPurpose", loanPurpose))
+                gwa = float(gwa)
+                updateDB(
+                    self.studentNumLabel.text(),
+                    ("gwa", gwa),
+                    ("loanPurpose", loanPurpose),
+                    ("honor", determineHonor(gwa))
+                )
+                self.updateApplyPage2()
                 self.stackedWidget.setCurrentWidget(self.applyPage2)
             else:
                 applyRejectedDialog().raiseError()
         else:
             errorInputDialog().raiseError()
+
+    def updateApplyPage2(self):
+        paymentDuration = self.paymentDurationInput.currentText()
+
+        if self.typeLabel.text()[-1] == "A":
+            self.maxAmountDisplay.setText("15000")
+        else:
+            self.maxAmountDisplay.setText("10000")
+
+        if paymentDuration == "3":
+            if self.typeLabel.text()[-1] == "A":
+                self.interestRateDisplay.setText("5%")
+            else:
+                self.interestRateDisplay.setText("7%")
+        if paymentDuration == "6":
+            if self.typeLabel.text()[-1] == "A":
+                self.interestRateDisplay.setText("8%")
+            else:
+                self.interestRateDisplay.setText("10%")
+        if paymentDuration == "12":
+            if self.typeLabel.text()[-1] == "A":
+                self.interestRateDisplay.setText("10%")
+            else:
+                self.interestRateDisplay.setText("15%")
 
     def gotoSummaryPage(self):
         desiredAmount = self.loanAmountInput.text()
