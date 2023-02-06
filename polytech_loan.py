@@ -30,6 +30,7 @@ class Window(QMainWindow, Ui_MainWindow):
         name = self.nameLineEdit.text()
         email = self.emailLineEdit.text()
         studentNum = self.studentNumLineEdit.text()
+        college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
         if isNotEmpty(name, email, studentNum):
             if isValidEmail(email):
@@ -37,8 +38,10 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.studentNumLabel.setText(studentNum)
                 self.courseLabel.setText(course)
                 if isInDB():
+                    self.displayLoanStatus()
                     self.gotoDashboard()
                 else:
+                    storeInDB(name, email, studentNum, college, course)
                     self.gotoEmptyDashboard()
             else:
                 invalidEmailError().raiseError()
@@ -48,6 +51,9 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def gotoEmptyDashboard(self):
         self.stackedWidget.setCurrentWidget(self.noLoanPage)
+
+    def displayLoanStatus(self):
+        ...
 
     def gotoDashboard(self):
         self.stackedWidget.setCurrentWidget(self.withLoanPage)

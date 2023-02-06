@@ -1,3 +1,6 @@
+import json
+import os
+
 from fpdf import FPDF
 
 from utils.constants import INTERFACE_FONT
@@ -39,6 +42,25 @@ def createPdf(filePath):
     pdf.output(filePath)
 
 
-def storeInDB():
-    # TODO: Function for storing data in DB
-    pass
+def storeInDB(*args):
+    if os.path.exists("data.json"):
+        with open("data.json", "r") as data:
+            existing_data = json.load(data)
+    else:
+        newAccount = {
+            args[2]: {
+                "name": args[0],
+                "email": args[1],
+                "college": args[3],
+                "course": args[4],
+                "loanAmount": None,
+                "interestAmount": None,
+                "paymentDuration": None,
+                "totalDebt": None,
+                "monthlyPayment": None,
+                "paymentMode": None,
+                "loanPurpose": None
+            }
+        }
+        with open("data.json", "w") as f:
+            json.dump(newAccount, f, indent=4, separators=(",", ": "), sort_keys=True)
