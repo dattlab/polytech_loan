@@ -48,34 +48,35 @@ def createPdf(filePath):
     pdf.output(filePath)
 
 
-def write_json(data: dict) -> None:
-    """Writes the data in user database"""
+def write_json(newData):
     with open("data.json", "w") as f:
-        json.dump(data, f, indent=4, separators=(",", ": "), sort_keys=True)
+        json.dump(newData, f, indent=4, separators=(",", ": "), sort_keys=True)
 
 
 def storeInDB(*args):
-    if os.path.exists("data.json"):
-        with open("data.json", "r") as data:
-            existing_data = json.load(data)
-    else:
-        newAccount = {
-            args[2]: {
-                "name": args[0],
-                "email": args[1],
-                "college": args[3],
-                "course": args[4],
-                "gwa": None,
-                "honor": None,
-                "loanAmount": None,
-                "interestAmount": None,
-                "paymentDuration": None,
-                "totalDebt": None,
-                "monthlyPayment": None,
-                "paymentMode": None,
-                "loanPurpose": None
-            }
+    newAccount = {
+        args[2]: {
+            "name": args[0],
+            "email": args[1],
+            "college": args[3],
+            "course": args[4],
+            "gwa": None,
+            "honor": None,
+            "loanAmount": None,
+            "interestAmount": None,
+            "paymentDuration": None,
+            "totalDebt": None,
+            "monthlyPayment": None,
+            "paymentMode": None,
+            "loanPurpose": None
         }
+    }
+    if os.path.exists("data.json"):
+        with open("data.json", "r") as f:
+            existing_data = json.load(f)
+        existing_data[args[2]] = newAccount[args[2]]
+        write_json(existing_data)
+    else:
         write_json(newAccount)
 
 
