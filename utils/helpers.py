@@ -6,11 +6,6 @@ from fpdf import FPDF
 from utils.constants import INTERFACE_FONT
 
 
-def exceedsMaxAmount():
-    # TODO: Check loan amount input function
-    pass
-
-
 def determineHonor(gwa):
     if gwa >= 1.5:
         return "President's Lister"
