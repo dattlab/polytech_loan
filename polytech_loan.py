@@ -54,7 +54,7 @@ class Window(QMainWindow, Ui_MainWindow):
         gwa = self.gwaApplyInput.text()
         loanPurpose = self.loanPurposeInput.text()
         if isNotEmpty(gwa, loanPurpose):
-            if gwaAccepted(float(gwa)):
+            if isFloat(gwa) and gwaAccepted(float(gwa)):
                 self.stackedWidget.setCurrentWidget(self.applyPage2)
             else:
                 rejectDialog = applyRejectedDialog()
@@ -63,14 +63,15 @@ class Window(QMainWindow, Ui_MainWindow):
             self.raiseInputError()
 
     def gotoSummaryPage(self):
-        desiredAmount = float(self.loanAmountInput.text())
-        maxLoanAmount = float(self.maxAmountDisplay.text()[4:])
+        desiredAmount = self.loanAmountInput.text()
+        maxLoanAmount = self.maxAmountDisplay.text()
         if isNotEmpty(desiredAmount):
-            if desiredAmount <= maxLoanAmount:
+            if isFloat(desiredAmount) and desiredAmount <= maxLoanAmount:
                 self.renderSummary()
                 self.stackedWidget.setCurrentWidget(self.summaryPage)
             else:
                 exceedMaxDialog = exceedMaxError()
+                exceedMaxDialog.exec()
         else:
             self.raiseInputError()
 
