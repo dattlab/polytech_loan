@@ -2651,7 +2651,7 @@ background-color: rgb(128, 0, 0);</string>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_25">
             <item>
-             <widget class="QPushButton" name="applyConfirmBtn_2">
+             <widget class="QPushButton" name="applyCancelBtn">
               <property name="font">
                <font>
                 <family>Atkinson Hyperlegible</family>
@@ -2685,6 +2685,25 @@ background-color: rgb(136, 0, 0);</string>
               </property>
               <property name="text">
                <string>Confirm</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="applySaveCopy">
+              <property name="font">
+               <font>
+                <family>Atkinson Hyperlegible</family>
+                <pointsize>15</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(136, 0, 0);</string>
+              </property>
+              <property name="text">
+               <string>Save a Copy</string>
               </property>
              </widget>
             </item>

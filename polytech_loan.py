@@ -19,7 +19,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.applyBtn.clicked.connect(self.gotoApplyPage1)
         self.applyBtn_2.clicked.connect(self.gotoApplyPage2)
         self.applyConfirmBtn.clicked.connect(self.gotoSummaryPage)
-        self.applyConfirmBtn_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.loginPage))
+        self.applyCancelBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.loginPage))
         self.applyConfirmBtn_3.clicked.connect(self.raiseApplySuccess)
 
     def raiseInputError(self):

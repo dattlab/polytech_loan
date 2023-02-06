@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\ui\main_window.ui'
+# Form implementation generated from reading ui file '.\main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -10,6 +10,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import ui.resources.applogo_rc
+import ui.resources.puplogo_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -1317,17 +1319,17 @@ class Ui_MainWindow(object):
         self.verticalLayout_22.addLayout(self.horizontalLayout_24)
         self.horizontalLayout_25 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_25.setObjectName("horizontalLayout_25")
-        self.applyConfirmBtn_2 = QtWidgets.QPushButton(self.summaryPage)
+        self.applyCancelBtn = QtWidgets.QPushButton(self.summaryPage)
         font = QtGui.QFont()
         font.setFamily("Atkinson Hyperlegible")
         font.setPointSize(15)
         font.setBold(True)
         font.setWeight(75)
-        self.applyConfirmBtn_2.setFont(font)
-        self.applyConfirmBtn_2.setStyleSheet("color: rgb(255, 255, 255);\n"
+        self.applyCancelBtn.setFont(font)
+        self.applyCancelBtn.setStyleSheet("color: rgb(255, 255, 255);\n"
 "background-color: rgb(91, 6, 22);")
-        self.applyConfirmBtn_2.setObjectName("applyConfirmBtn_2")
-        self.horizontalLayout_25.addWidget(self.applyConfirmBtn_2)
+        self.applyCancelBtn.setObjectName("applyCancelBtn")
+        self.horizontalLayout_25.addWidget(self.applyCancelBtn)
         self.applyConfirmBtn_3 = QtWidgets.QPushButton(self.summaryPage)
         font = QtGui.QFont()
         font.setFamily("Atkinson Hyperlegible")
@@ -1339,6 +1341,17 @@ class Ui_MainWindow(object):
 "background-color: rgb(136, 0, 0);")
         self.applyConfirmBtn_3.setObjectName("applyConfirmBtn_3")
         self.horizontalLayout_25.addWidget(self.applyConfirmBtn_3)
+        self.applySaveCopyBtn = QtWidgets.QPushButton(self.summaryPage)
+        font = QtGui.QFont()
+        font.setFamily("Atkinson Hyperlegible")
+        font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
+        self.applySaveCopyBtn.setFont(font)
+        self.applySaveCopyBtn.setStyleSheet("color: rgb(255, 255, 255);\n"
+"background-color: rgb(136, 0, 0);")
+        self.applySaveCopyBtn.setObjectName("applySaveCopyBtn")
+        self.horizontalLayout_25.addWidget(self.applySaveCopyBtn)
         self.verticalLayout_22.addLayout(self.horizontalLayout_25)
         self.gridLayout_7.addLayout(self.verticalLayout_22, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.summaryPage)
@@ -1441,7 +1454,6 @@ class Ui_MainWindow(object):
         self.monthPaymentSummDisplay.setText(_translate("MainWindow", "MP here"))
         self.modePaymentSummDisplay.setText(_translate("MainWindow", "Honor Here"))
         self.purposeSummDisplay.setText(_translate("MainWindow", "Purpose here"))
-        self.applyConfirmBtn_2.setText(_translate("MainWindow", "Cancel"))
+        self.applyCancelBtn.setText(_translate("MainWindow", "Cancel"))
         self.applyConfirmBtn_3.setText(_translate("MainWindow", "Confirm"))
-import ui.resources.applogo_rc
-import ui.resources.puplogo_rc
+        self.applySaveCopyBtn.setText(_translate("MainWindow", "Save a Copy"))
