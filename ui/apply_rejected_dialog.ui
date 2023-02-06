@@ -30,7 +30,7 @@
         <string notr="true">color: rgb(0, 0, 0);</string>
        </property>
        <property name="text">
-        <string>To be qualified, GWA must be above 1.75</string>
+        <string>To be qualified, GWA must be above 1.75.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
