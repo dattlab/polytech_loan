@@ -103,17 +103,17 @@ class Window(QMainWindow, Ui_MainWindow):
             self.maxAmountDisplay.setText("10000")
 
         if paymentDuration == "3":
-            if self.typeLabel.text()[-1] == "A":
+            if self.paymentMethodInput.currentText()[8] == "d":
                 self.interestRateDisplay.setText("5%")
             else:
                 self.interestRateDisplay.setText("7%")
         if paymentDuration == "6":
-            if self.typeLabel.text()[-1] == "A":
+            if self.paymentMethodInput.currentText()[8] == "d":
                 self.interestRateDisplay.setText("8%")
             else:
                 self.interestRateDisplay.setText("10%")
         if paymentDuration == "12":
-            if self.typeLabel.text()[-1] == "A":
+            if self.paymentMethodInput.currentText()[8] == "d":
                 self.interestRateDisplay.setText("10%")
             else:
                 self.interestRateDisplay.setText("15%")
