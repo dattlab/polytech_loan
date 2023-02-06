@@ -76,11 +76,14 @@ class Window(QMainWindow, Ui_MainWindow):
             self.raiseInputError()
 
     def renderSummary(self):
-        pass
+        ...
 
     def saveToPdf(self):
-        # TODO: Save to PDF function
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        filePath, _ = QFileDialog.getSaveFileName(self, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options)
+        filePath = filePath.replace("/", "\\\\")
+        createPdf(filePath)
 
 
 class errorInputDialog(QDialog):
