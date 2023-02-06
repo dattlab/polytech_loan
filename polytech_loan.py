@@ -63,6 +63,7 @@ class Window(QMainWindow, Ui_MainWindow):
         loanPurpose = self.loanPurposeInput.text()
         if isNotEmpty(gwa, loanPurpose):
             if isFloat(gwa) and gwaAccepted(float(gwa)):
+                updateDB(self.studentNumLabel.text(), ("gwa", gwa), ("loanPurpose", loanPurpose))
                 self.stackedWidget.setCurrentWidget(self.applyPage2)
             else:
                 applyRejectedDialog().raiseError()

@@ -42,6 +42,12 @@ def createPdf(filePath):
     pdf.output(filePath)
 
 
+def write_json(data: dict) -> None:
+    """Writes the data in user database"""
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=4, separators=(",", ": "), sort_keys=True)
+
+
 def storeInDB(*args):
     if os.path.exists("data.json"):
         with open("data.json", "r") as data:
@@ -53,6 +59,8 @@ def storeInDB(*args):
                 "email": args[1],
                 "college": args[3],
                 "course": args[4],
+                "gwa": None,
+                "honor": None,
                 "loanAmount": None,
                 "interestAmount": None,
                 "paymentDuration": None,
@@ -62,5 +70,15 @@ def storeInDB(*args):
                 "loanPurpose": None
             }
         }
-        with open("data.json", "w") as f:
-            json.dump(newAccount, f, indent=4, separators=(",", ": "), sort_keys=True)
+        write_json(newAccount)
+
+
+def updateDB(studentNumber, *args):
+    with open("data.json", "r") as f:
+        data = json.load(f)
+
+    for i in args:
+        keyToBeUpdated = i[0]
+        valueUpdate = i[1]
+        data[studentNumber][keyToBeUpdated] = valueUpdate
+    write_json(data)
