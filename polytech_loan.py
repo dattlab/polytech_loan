@@ -1,11 +1,11 @@
 import sys
 
 from PyQt5.QtWidgets import (
-    QApplication, QDialog, QMainWindow, QFileDialog
+    QApplication, QMainWindow, QFileDialog
 )
-from PyQt5.uic import loadUi
 
 from ui.main_window_ui import Ui_MainWindow
+from ui.dialogs_ui import *
 from utils.error_handlers import *
 from utils.helpers import *
 
@@ -84,34 +84,6 @@ class Window(QMainWindow, Ui_MainWindow):
         filePath, _ = QFileDialog.getSaveFileName(self, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options)
         filePath = filePath.replace("/", "\\\\")
         createPdf(filePath)
-
-
-class errorInputDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        loadUi("ui/error_input.ui", self)
-        self.pushButton.clicked.connect(self.close)
-
-
-class applySuccessDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        loadUi("ui/apply_success_dialog.ui", self)
-        self.pushButton.clicked.connect(self.close)
-
-
-class applyRejectedDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        loadUi("ui/apply_rejected_dialog.ui", self)
-        self.pushButton.clicked.connect(self.close)
-
-
-class exceedMaxError(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        loadUi("ui/exceed_max_amount_dialog.ui", self)
-        self.pushButton.clicked.connect(self.close)
 
 
 def main() -> None:
