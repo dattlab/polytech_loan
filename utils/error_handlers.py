@@ -1,7 +1,13 @@
 def isNotEmpty():
-    pass
+    # TODO: Check input function
+    return True
 
 
 def isInDB():
-    pass
+    # TODO: Check DB function
+    return True
 
+
+def gwaAccepted(gwa):
+    # TODO: Check GWA function
+    return True
