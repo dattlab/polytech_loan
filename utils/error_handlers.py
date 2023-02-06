@@ -1,5 +1,7 @@
-def isNotEmpty():
-    # TODO: Check input function
+def isNotEmpty(*args):
+    for i in args:
+        if i == "":
+            return False
     return True
 
 

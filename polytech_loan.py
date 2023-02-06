@@ -36,30 +36,50 @@ class Window(QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentWidget(self.loginPage)
 
     def gotoMainPage(self):
-        self.nameLabel.setText(self.nameLineEdit.text())
-        self.studentNumLabel.setText(self.studentNumLineEdit.text())
-        self.courseLabel.setText(self.courseComboBox.currentText())
-        if isInDB():
-            self.stackedWidget.setCurrentWidget(self.withLoanPage)
-        else:
-            self.stackedWidget.setCurrentWidget(self.noLoanPage)
-
-    def gotoApplyPage2(self):
-        if gwaAccepted():
-            self.stackedWidget.setCurrentWidget(self.applyPage2)
-        else:
-            rejectDialog = applyRejectedDialog()
-            rejectDialog.exec()
-
-    def gotoSummaryPage(self):
-        if isNotEmpty():
-            self.stackedWidget.setCurrentWidget(self.summaryPage)
+        name = self.nameLineEdit.text()
+        studentNum = self.studentNumLineEdit.text()
+        course = self.courseComboBox.currentText()
+        if isNotEmpty(name, studentNum, course):
+            self.nameLabel.setText(name)
+            self.studentNumLabel.setText(studentNum)
+            self.courseLabel.setText(course)
+            if isInDB():
+                self.stackedWidget.setCurrentWidget(self.withLoanPage)
+            else:
+                self.stackedWidget.setCurrentWidget(self.noLoanPage)
         else:
             self.raiseInputError()
 
+    def gotoApplyPage2(self):
+        gwa = self.gwaApplyInput.text()
+        loanPurpose = self.loanPurposeInput.text()
+        if isNotEmpty(gwa, loanPurpose):
+            if gwaAccepted(float(gwa)):
+                self.stackedWidget.setCurrentWidget(self.applyPage2)
+            else:
+                rejectDialog = applyRejectedDialog()
+                rejectDialog.exec()
+        else:
+            self.raiseInputError()
+
+    def gotoSummaryPage(self):
+        desiredAmount = float(self.loanAmountInput.text())
+        maxLoanAmount = float(self.maxAmountDisplay.text()[4:])
+        if isNotEmpty(desiredAmount):
+            if desiredAmount <= maxLoanAmount:
+                self.renderSummary()
+                self.stackedWidget.setCurrentWidget(self.summaryPage)
+            else:
+                exceedMaxDialog = exceedMaxError()
+        else:
+            self.raiseInputError()
+
+    def renderSummary(self):
+        pass
+
     def saveToPdf(self):
         # TODO: Save to PDF function
-        fpath = QFileDialog.getSaveFileUrl(self, "Save As", "c:\\", "PDF (*.pdf)")
+        pass
 
 
 class errorInputDialog(QDialog):
@@ -80,6 +100,13 @@ class applyRejectedDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("ui/apply_rejected_dialog.ui", self)
+        self.pushButton.clicked.connect(self.close)
+
+
+class exceedMaxError(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loadUi("ui/exceed_max_amount_dialog.ui", self)
         self.pushButton.clicked.connect(self.close)
 
 
