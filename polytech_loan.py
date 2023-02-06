@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtWidgets import (
-    QApplication, QDialog, QMainWindow
+    QApplication, QDialog, QMainWindow, QFileDialog
 )
 from PyQt5.uic import loadUi
 
@@ -15,12 +15,16 @@ class Window(QMainWindow, Ui_MainWindow):
         super().__init__(parent)
         self.setupUi(self)
         self.loginBtn.clicked.connect(self.gotoMainPage)
-        self.pushButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.loginPage))
-        self.applyBtn.clicked.connect(self.gotoApplyPage1)
+        self.logOutBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.loginPage))
+        self.logOutBtn_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.loginPage))
+        self.applyBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage))
+        self.applyCancelBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.noLoanPage))
         self.applyBtn_2.clicked.connect(self.gotoApplyPage2)
+        self.applyCancelBtn_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage))
         self.applyConfirmBtn.clicked.connect(self.gotoSummaryPage)
-        self.applyCancelBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.loginPage))
+        self.applyCancelBtn_3.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage2))
         self.applyConfirmBtn_3.clicked.connect(self.raiseApplySuccess)
+        self.applySaveCopyBtn.clicked.connect(self.saveToPdf)
 
     def raiseInputError(self):
         dialog = errorInputDialog(self)
@@ -32,19 +36,30 @@ class Window(QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentWidget(self.loginPage)
 
     def gotoMainPage(self):
+        self.nameLabel.setText(self.nameLineEdit.text())
+        self.studentNumLabel.setText(self.studentNumLineEdit.text())
+        self.courseLabel.setText(self.courseComboBox.currentText())
         if isInDB():
             self.stackedWidget.setCurrentWidget(self.withLoanPage)
         else:
             self.stackedWidget.setCurrentWidget(self.noLoanPage)
 
-    def gotoApplyPage1(self):
-        self.stackedWidget.setCurrentWidget(self.applyPage)
-
     def gotoApplyPage2(self):
-        self.stackedWidget.setCurrentWidget(self.applyPage2)
+        if gwaAccepted():
+            self.stackedWidget.setCurrentWidget(self.applyPage2)
+        else:
+            rejectDialog = applyRejectedDialog()
+            rejectDialog.exec()
 
     def gotoSummaryPage(self):
-        self.stackedWidget.setCurrentWidget(self.summaryPage)
+        if isNotEmpty():
+            self.stackedWidget.setCurrentWidget(self.summaryPage)
+        else:
+            self.raiseInputError()
+
+    def saveToPdf(self):
+        # TODO: Save to PDF function
+        fpath = QFileDialog.getSaveFileUrl(self, "Save As", "c:\\", "PDF (*.pdf)")
 
 
 class errorInputDialog(QDialog):
@@ -58,6 +73,13 @@ class applySuccessDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         loadUi("ui/apply_success_dialog.ui", self)
+        self.pushButton.clicked.connect(self.close)
+
+
+class applyRejectedDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loadUi("ui/apply_rejected_dialog.ui", self)
         self.pushButton.clicked.connect(self.close)
 
 

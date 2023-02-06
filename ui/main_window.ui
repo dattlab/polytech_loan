@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>587</width>
+    <width>731</width>
     <height>641</height>
    </rect>
   </property>
@@ -285,23 +285,38 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="collegeLineEdit">
+               <widget class="QComboBox" name="collegeComboBox">
                 <property name="font">
                  <font>
                   <family>Atkinson Hyperlegible</family>
                   <pointsize>15</pointsize>
                  </font>
                 </property>
+                <item>
+                 <property name="text">
+                  <string>CCIS - College of Computer and Information Sciences</string>
+                 </property>
+                </item>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="courseLineEdit">
+               <widget class="QComboBox" name="courseComboBox">
                 <property name="font">
                  <font>
                   <family>Atkinson Hyperlegible</family>
                   <pointsize>15</pointsize>
                  </font>
                 </property>
+                <item>
+                 <property name="text">
+                  <string>(BSCS) BS Computer Science</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>(BSIT) BS Information Technology</string>
+                 </property>
+                </item>
                </widget>
               </item>
              </layout>
@@ -346,7 +361,7 @@
             </property>
             <property name="styleSheet">
              <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(91, 6, 22);</string>
+background-color: rgb(136, 0, 0);</string>
             </property>
             <property name="text">
              <string>Login</string>
@@ -548,23 +563,46 @@ background-color: rgb(91, 6, 22);</string>
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="applyBtn">
-            <property name="font">
-             <font>
-              <family>Atkinson Hyperlegible</family>
-              <pointsize>15</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color: rgb(255, 255, 255);
+           <layout class="QHBoxLayout" name="horizontalLayout_26">
+            <item>
+             <widget class="QPushButton" name="logOutBtn">
+              <property name="font">
+               <font>
+                <family>Atkinson Hyperlegible</family>
+                <pointsize>15</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(91, 6, 22);</string>
-            </property>
-            <property name="text">
-             <string>Apply for Student Loan</string>
-            </property>
-           </widget>
+              </property>
+              <property name="text">
+               <string>Log Out</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="applyBtn">
+              <property name="font">
+               <font>
+                <family>Atkinson Hyperlegible</family>
+                <pointsize>15</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(136, 0, 0);</string>
+              </property>
+              <property name="text">
+               <string>Apply for Student Loan</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -1151,7 +1189,7 @@ background-color: rgb(128, 0, 0);</string>
            </layout>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="logOutBtn_2">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -1180,9 +1218,9 @@ background-color: rgb(91, 6, 22);</string>
        </layout>
       </widget>
       <widget class="QWidget" name="applyPage">
-       <layout class="QGridLayout" name="gridLayout_5">
+       <layout class="QGridLayout" name="gridLayout_6">
         <item row="0" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout_13">
+         <layout class="QVBoxLayout" name="verticalLayout_14">
           <item>
            <widget class="QWidget" name="applyPageHeader" native="true">
             <property name="maximumSize">
@@ -1425,32 +1463,55 @@ background-color: rgb(91, 6, 22);</string>
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="applyBtn_2">
-            <property name="font">
-             <font>
-              <family>Atkinson Hyperlegible</family>
-              <pointsize>15</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color: rgb(255, 255, 255);
+           <layout class="QHBoxLayout" name="horizontalLayout_28">
+            <item>
+             <widget class="QPushButton" name="applyCancelBtn">
+              <property name="font">
+               <font>
+                <family>Atkinson Hyperlegible</family>
+                <pointsize>15</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(91, 6, 22);</string>
-            </property>
-            <property name="text">
-             <string>Apply</string>
-            </property>
-           </widget>
+              </property>
+              <property name="text">
+               <string>Cancel</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="applyBtn_2">
+              <property name="font">
+               <font>
+                <family>Atkinson Hyperlegible</family>
+                <pointsize>15</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(136, 0, 0);</string>
+              </property>
+              <property name="text">
+               <string>Apply</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="applyPage2">
-       <layout class="QGridLayout" name="gridLayout_6">
+       <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout_14">
+         <layout class="QVBoxLayout" name="verticalLayout_13">
           <item>
            <widget class="QWidget" name="applyPage2Header" native="true">
             <property name="maximumSize">
@@ -1943,23 +2004,46 @@ background-color: rgb(91, 6, 22);</string>
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="applyConfirmBtn">
-            <property name="font">
-             <font>
-              <family>Atkinson Hyperlegible</family>
-              <pointsize>15</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color: rgb(255, 255, 255);
+           <layout class="QHBoxLayout" name="horizontalLayout_27">
+            <item>
+             <widget class="QPushButton" name="applyCancelBtn_2">
+              <property name="font">
+               <font>
+                <family>Atkinson Hyperlegible</family>
+                <pointsize>15</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(91, 6, 22);</string>
-            </property>
-            <property name="text">
-             <string>Confirm</string>
-            </property>
-           </widget>
+              </property>
+              <property name="text">
+               <string>Cancel</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="applyConfirmBtn">
+              <property name="font">
+               <font>
+                <family>Atkinson Hyperlegible</family>
+                <pointsize>15</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 255, 255);
+background-color: rgb(136, 0, 0);</string>
+              </property>
+              <property name="text">
+               <string>Confirm</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -2651,7 +2735,7 @@ background-color: rgb(128, 0, 0);</string>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_25">
             <item>
-             <widget class="QPushButton" name="applyCancelBtn">
+             <widget class="QPushButton" name="applyCancelBtn_3">
               <property name="font">
                <font>
                 <family>Atkinson Hyperlegible</family>
@@ -2689,7 +2773,7 @@ background-color: rgb(136, 0, 0);</string>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="applySaveCopy">
+             <widget class="QPushButton" name="applySaveCopyBtn">
               <property name="font">
                <font>
                 <family>Atkinson Hyperlegible</family>
