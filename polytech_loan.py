@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QFileDialog
+    QApplication, QMainWindow, QFileDialog, QWidget
 )
 
 from ui.main_window_ui import Ui_MainWindow
@@ -15,8 +15,8 @@ class Window(QMainWindow, Ui_MainWindow):
         super().__init__(parent)
         self.setupUi(self)
         self.loginBtn.clicked.connect(self.gotoMainPage)
-        self.logOutBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.loginPage))
-        self.logOutBtn_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.loginPage))
+        self.logOutBtn.clicked.connect(self.gotoLoginPage)
+        self.logOutBtn_2.clicked.connect(self.gotoLoginPage)
         self.applyBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage))
         self.applyCancelBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.noLoanPage))
         self.applyBtn_2.clicked.connect(self.gotoApplyPage2)
@@ -33,7 +33,7 @@ class Window(QMainWindow, Ui_MainWindow):
     def raiseApplySuccess(self):
         dialog = applySuccessDialog(self)
         dialog.exec()
-        self.stackedWidget.setCurrentWidget(self.loginPage)
+        self.gotoLoginPage()
 
     def gotoMainPage(self):
         name = self.nameLineEdit.text()
@@ -75,15 +75,25 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             self.raiseInputError()
 
+    def gotoLoginPage(self):
+        self.clearLoginInput()
+        self.stackedWidget.setCurrentWidget(self.loginPage)
+
+    def clearLoginInput(self):
+        self.nameLineEdit.setText("")
+        self.emailLineEdit.setText("")
+        self.studentNumLineEdit.setText("")
+
     def renderSummary(self):
         ...
 
     def saveToPdf(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        filePath, _ = QFileDialog.getSaveFileName(self, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options)
+        filePath, _ = QFileDialog.getSaveFileName(None, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options)
         filePath = filePath.replace("/", "\\\\")
         createPdf(filePath)
+        self.gotoLoginPage()
 
 
 def main() -> None:
