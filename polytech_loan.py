@@ -1,4 +1,5 @@
 import sys
+import json
 
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QFileDialog
@@ -48,9 +49,7 @@ class Window(QMainWindow, Ui_MainWindow):
         if os.path.exists("data.json") and isInDB(studentNum):
             if validCredentials(studentNum, ("name", name), ("email", email), ("college", college), ("course", course)):
                 if noLoan(studentNum):
-                    self.nameLabel.setText(name)
-                    self.studentNumLabel.setText(studentNum)
-                    self.courseLabel.setText(course)
+                    self.renderInfoHeader()
                     self.gotoEmptyDashboard()
                 else:
                     self.nameLabel_2.setText(name)
@@ -61,11 +60,17 @@ class Window(QMainWindow, Ui_MainWindow):
                 invalidCred = invalidCredentials()
                 invalidCred.exec()
         else:
+            self.renderInfoHeader()
             storeInDB(name, email, studentNum, college, course)
             self.gotoEmptyDashboard()
 
     def gotoEmptyDashboard(self):
         self.stackedWidget.setCurrentWidget(self.noLoanPage)
+
+    def renderInfoHeader(self):
+        self.nameLabel.setText(self.nameLineEdit.text())
+        self.studentNumLabel.setText(self.studentNumLineEdit.text())
+        self.courseLabel.setText(self.courseComboBox.currentText())
 
     def gotoDashboard(self):
         self.stackedWidget.setCurrentWidget(self.withLoanPage)
@@ -98,9 +103,9 @@ class Window(QMainWindow, Ui_MainWindow):
         paymentDuration = self.paymentDurationInput.currentText()
 
         if self.typeLabel.text()[-1] == "A":
-            self.maxAmountDisplay.setText("15000")
+            self.maxAmountDisplay.setText("Php 15000")
         else:
-            self.maxAmountDisplay.setText("10000")
+            self.maxAmountDisplay.setText("Php 10000")
 
         if paymentDuration == "3":
             if self.paymentMethodInput.currentText()[8] == "d":
@@ -120,11 +125,12 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def gotoSummaryPage(self):
         desiredAmount = self.loanAmountInput.text()
-        maxLoanAmount = self.maxAmountDisplay.text()
+        maxLoanAmount = float(self.maxAmountDisplay.text()[4:])
         interestRate = float(self.interestRateDisplay.text()[:-1]) / 100
-        paymentDuration = int(self.paymentDurationInput.currenText())
+        paymentDuration = int(self.paymentDurationInput.currentText())
         if isNotEmpty(desiredAmount):
-            if isFloat(desiredAmount) and desiredAmount <= maxLoanAmount:
+            if isFloat(desiredAmount) and float(desiredAmount) <= maxLoanAmount:
+                desiredAmount = float(desiredAmount)
                 interestAmount = desiredAmount * interestRate
                 totalDebt = desiredAmount + interestAmount
                 monthlyPayment = totalDebt / paymentDuration
@@ -154,14 +160,30 @@ class Window(QMainWindow, Ui_MainWindow):
         self.studentNumLineEdit.setText("")
 
     def renderSummary(self):
-        ...
+        with open("data.json", "r") as f:
+            data = json.load(f)
+        data = data[self.studentNumLabel.text()]
+        self.nameSummDisplay.setText(data["name"])
+        self.emailSummDisplay.setText(data["email"])
+        self.studentNumSummDisplay.setText(self.studentNumLabel.text())
+        self.collegeSummDisplay.setText(data["college"])
+        self.courseSummDisplay.setText(data["course"])
+        self.gwaSummDisplay.setText(str(data["gwa"]))
+        self.honorSummDisplay.setText(data["honor"])
+        self.loanAmountSummDisplay.setText(str(data["loanAmount"]))
+        self.interestAmountSummDisplay.setText(str(data["interestAmount"]))
+        self.paymentDurationSummDisplay.setText(str(data["paymentDuration"]))
+        self.totalDebtSummDisplay.setText(str(data["totalDebt"]))
+        self.monthPaymentSummDisplay.setText(str(data["monthlyPayment"]))
+        self.modePaymentSummDisplay.setText(data["paymentMode"])
+        self.purposeSummDisplay.setText(data["loanPurpose"])
 
     def saveToPdf(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         filePath, _ = QFileDialog.getSaveFileName(None, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options)
         filePath = filePath.replace("/", "\\\\")
-        createPdf(filePath)
+        createPdf(filePath, self.studentNumLabel.text())
         self.gotoLoginPage()
 
     def raisApplySuccess(self):
