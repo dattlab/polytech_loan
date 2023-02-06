@@ -163,12 +163,12 @@ class Window(QMainWindow, Ui_MainWindow):
     def renderDashboardStat(self):
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
-        data = data[self.studentNumLabel.text()]
+        data = data[self.studentNumLineEdit.text()]
         self.gwaDisplay.setText(str(data["gwa"]))
         self.honorDisplay.setText(data["honor"])
         self.loanAmountDisplay.setText(str(data["loanAmount"]))
         self.interestAmountDisplay.setText(str(data["interestAmount"]))
-        self.paymentDurationDisplay.setText(str(data["paymentDuration"]))
+        self.paymentDurationDisplay_2.setText(str(data["paymentDuration"]))
         self.totalDebtDisplay.setText(str(data["totalDebt"]))
         self.monthPaymentDisplay.setText(str(data["monthlyPayment"]))
         self.modePaymentDisplay.setText(data["paymentMode"])
