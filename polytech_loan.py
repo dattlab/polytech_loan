@@ -14,6 +14,7 @@ class Window(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+
         self.loginBtn.clicked.connect(self.gotoMainPage)
         self.logOutBtn.clicked.connect(self.gotoLoginPage)
         self.logOutBtn_2.clicked.connect(self.gotoLoginPage)
@@ -25,15 +26,6 @@ class Window(QMainWindow, Ui_MainWindow):
         self.applyCancelBtn_3.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage2))
         self.applyConfirmBtn_3.clicked.connect(self.raiseApplySuccess)
         self.applySaveCopyBtn.clicked.connect(self.saveToPdf)
-
-    def raiseInputError(self):
-        dialog = errorInputDialog(self)
-        dialog.exec()
-
-    def raiseApplySuccess(self):
-        dialog = applySuccessDialog(self)
-        dialog.exec()
-        self.gotoLoginPage()
 
     def gotoMainPage(self):
         name = self.nameLineEdit.text()
@@ -64,8 +56,7 @@ class Window(QMainWindow, Ui_MainWindow):
             if isFloat(gwa) and gwaAccepted(float(gwa)):
                 self.stackedWidget.setCurrentWidget(self.applyPage2)
             else:
-                rejectDialog = applyRejectedDialog()
-                rejectDialog.exec()
+                self.raiseApplyRejected()
         else:
             self.raiseInputError()
 
@@ -77,8 +68,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.renderSummary()
                 self.stackedWidget.setCurrentWidget(self.summaryPage)
             else:
-                exceedMaxDialog = exceedMaxError()
-                exceedMaxDialog.exec()
+                self.raiseExceedMaxError()
         else:
             self.raiseInputError()
 
@@ -101,6 +91,23 @@ class Window(QMainWindow, Ui_MainWindow):
         filePath = filePath.replace("/", "\\\\")
         createPdf(filePath)
         self.gotoLoginPage()
+
+    def raiseInputError(self):
+        dialog = errorInputDialog(self)
+        dialog.exec()
+
+    def raiseApplySuccess(self):
+        dialog = applySuccessDialog(self)
+        dialog.exec()
+        self.gotoLoginPage()
+
+    def raiseApplyRejected(self):
+        dialog = applyRejectedDialog(self)
+        dialog.exec()
+
+    def raiseExceedMaxError(self):
+        dialog = exceedMaxError(self)
+        dialog.exec()
 
 
 def main() -> None:
