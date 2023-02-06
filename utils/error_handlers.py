@@ -11,8 +11,10 @@ def isInDB():
 
 
 def gwaAccepted(gwa):
-    # TODO: Check GWA function
-    return True
+    if gwa in {1.0, 1.25, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 4.0, 5.0}:
+        if 1.75 >= gwa >= 1.0:
+            return True
+    return False
 
 
 def isFloat(userInput):
