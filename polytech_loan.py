@@ -37,18 +37,25 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def gotoMainPage(self):
         name = self.nameLineEdit.text()
+        email = self.emailLineEdit.text()
         studentNum = self.studentNumLineEdit.text()
         course = self.courseComboBox.currentText()
-        if isNotEmpty(name, studentNum, course):
+        if isNotEmpty(name, email, studentNum):
             self.nameLabel.setText(name)
             self.studentNumLabel.setText(studentNum)
             self.courseLabel.setText(course)
             if isInDB():
-                self.stackedWidget.setCurrentWidget(self.withLoanPage)
+                self.gotoDashboard()
             else:
-                self.stackedWidget.setCurrentWidget(self.noLoanPage)
+                self.gotoEmptyDashboard()
         else:
             self.raiseInputError()
+
+    def gotoEmptyDashboard(self):
+        self.stackedWidget.setCurrentWidget(self.noLoanPage)
+
+    def gotoDashboard(self):
+        self.stackedWidget.setCurrentWidget(self.withLoanPage)
 
     def gotoApplyPage2(self):
         gwa = self.gwaApplyInput.text()
