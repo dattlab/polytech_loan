@@ -121,8 +121,22 @@ class Window(QMainWindow, Ui_MainWindow):
     def gotoSummaryPage(self):
         desiredAmount = self.loanAmountInput.text()
         maxLoanAmount = self.maxAmountDisplay.text()
+        interestRate = float(self.interestRateDisplay.text()[:-1]) / 100
+        paymentDuration = int(self.paymentDurationInput.currenText())
         if isNotEmpty(desiredAmount):
             if isFloat(desiredAmount) and desiredAmount <= maxLoanAmount:
+                interestAmount = desiredAmount * interestRate
+                totalDebt = desiredAmount + interestAmount
+                monthlyPayment = totalDebt / paymentDuration
+                updateDB(
+                    self.studentNumLabel.text(),
+                    ("loanAmount", desiredAmount),
+                    ("interestAmount", interestAmount),
+                    ("paymentDuration", f"{paymentDuration} months"),
+                    ("totalDebt", totalDebt),
+                    ("monthlyPayment", monthlyPayment),
+                    ("paymentMode", self.paymentMethodInput.currentText())
+                )
                 self.renderSummary()
                 self.stackedWidget.setCurrentWidget(self.summaryPage)
             else:
