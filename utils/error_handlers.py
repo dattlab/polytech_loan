@@ -36,8 +36,7 @@ def validCredentials(studentNumber, *args):
         accounts = json.load(f)
     for a in args:
         if accounts[studentNumber][a[0]] != a[1]:
-            invalidCred = invalidCredentials()
-            invalidCred.exec()
+            invalidCredentials().exec()
             return False
     return True
 
@@ -60,5 +59,5 @@ def isValidEmail(email):
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
     if re.fullmatch(regex, email):
         return True
-    invalidEmailError().raiseError()
+    invalidEmailError().exec()
     return False
