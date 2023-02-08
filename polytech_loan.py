@@ -11,7 +11,10 @@ from utils.helpers import *
 
 
 class Window(QMainWindow, Ui_MainWindow):
-    def __init__(self, parent=None):
+    """
+    Controller of Main Window UI
+    """
+    def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
         self.loginBtn.clicked.connect(self.gotoMainPage)
@@ -29,7 +32,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.paymentDurationInput.currentTextChanged.connect(self.updateApplyPage2)
         self.paymentMethodInput.currentTextChanged.connect(self.updateApplyPage2)
 
-    def gotoMainPage(self):
+    def gotoMainPage(self) -> None:
         name = self.nameLineEdit.text()
         email = self.emailLineEdit.text()
         studentNum = self.studentNumLineEdit.text()
@@ -42,7 +45,7 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             errorInputDialog().raiseError()
 
-    def checkCredentials(self, name, email, studentNum):
+    def checkCredentials(self, name, email, studentNum) -> None:
         college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
         if os.path.exists(DATA_FILE) and isInDB(studentNum):
@@ -64,7 +67,7 @@ class Window(QMainWindow, Ui_MainWindow):
             storeInDB(name, email, studentNum, college, course)
             self.gotoEmptyDashboard()
 
-    def gotoEmptyDashboard(self):
+    def gotoEmptyDashboard(self) -> None:
         self.stackedWidget.setCurrentWidget(self.noLoanPage)
 
     def renderInfoHeader(self):
@@ -123,7 +126,7 @@ class Window(QMainWindow, Ui_MainWindow):
             else:
                 self.interestRateDisplay.setText("15%")
 
-    def gotoSummaryPage(self):
+    def gotoSummaryPage(self) -> None:
         desiredAmount = self.loanAmountInput.text()
         maxLoanAmount = float(self.maxAmountDisplay.text()[4:])
         interestRate = float(self.interestRateDisplay.text()[:-1]) / 100
@@ -150,16 +153,16 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             errorInputDialog().raiseError()
 
-    def gotoLoginPage(self):
+    def gotoLoginPage(self) -> None:
         self.clearLoginInput()
         self.stackedWidget.setCurrentWidget(self.loginPage)
 
-    def clearLoginInput(self):
+    def clearLoginInput(self) -> None:
         self.nameLineEdit.setText("")
         self.emailLineEdit.setText("")
         self.studentNumLineEdit.setText("")
 
-    def renderDashboardStat(self):
+    def renderDashboardStat(self) -> None:
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
         data = data[self.studentNumLineEdit.text()]
@@ -173,7 +176,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.modePaymentDisplay.setText(data["paymentMode"])
         self.purposeDisplay.setText(data["loanPurpose"])
 
-    def renderSummary(self):
+    def renderSummary(self) -> None:
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
         data = data[self.studentNumLabel.text()]
@@ -192,7 +195,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.modePaymentSummDisplay.setText(data["paymentMode"])
         self.purposeSummDisplay.setText(data["loanPurpose"])
 
-    def saveToPdf(self):
+    def saveToPdf(self) -> None:
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         filePath, _ = QFileDialog.getSaveFileName(None, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options)
@@ -200,7 +203,7 @@ class Window(QMainWindow, Ui_MainWindow):
         createPdf(filePath, self.studentNumLabel.text())
         self.gotoLoginPage()
 
-    def raisApplySuccess(self):
+    def raisApplySuccess(self) -> None:
         applySuccessDialog().raiseDialog()
         self.gotoLoginPage()
 
