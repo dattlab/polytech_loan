@@ -3,6 +3,7 @@ import os.path
 import re
 
 from utils.constants import DATA_FILE
+from ui.dialogs_ui import invalidEmailError, invalidCredentials
 
 
 def isNotEmpty(*args):
@@ -35,6 +36,8 @@ def validCredentials(studentNumber, *args):
         accounts = json.load(f)
     for a in args:
         if accounts[studentNumber][a[0]] != a[1]:
+            invalidCred = invalidCredentials()
+            invalidCred.exec()
             return False
     return True
 
@@ -57,4 +60,5 @@ def isValidEmail(email):
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
     if re.fullmatch(regex, email):
         return True
+    invalidEmailError().raiseError()
     return False
