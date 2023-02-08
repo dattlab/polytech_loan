@@ -41,7 +41,7 @@ class Window(QMainWindow, Ui_MainWindow):
         if isNotEmpty(name, email, studentNum) and isValidEmail(email):
             if os.path.exists(DATA_FILE) and isInDB(studentNum):
                 if validCredentials(studentNum, ("name", name), ("email", email), ("college", college),
-                                    ("course", course)) and noLoan(studentNum):
+                                    ("course", course)):
                     if noLoan(studentNum):
                         self.renderInfoHeader()
                         self.gotoEmptyDashboard()
