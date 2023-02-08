@@ -192,7 +192,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.gotoLoginPage()
 
     def raisApplySuccess(self) -> None:
-        applySuccessDialog().raiseDialog()
+        applySuccessDialog().exec()
         self.gotoLoginPage()
 
 
