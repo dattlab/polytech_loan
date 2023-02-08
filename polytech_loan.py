@@ -188,7 +188,6 @@ class Window(QMainWindow, Ui_MainWindow):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         filePath, _ = QFileDialog.getSaveFileName(None, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options)
-        filePath = filePath.replace("/", "\\\\")
         createPdf(filePath, self.studentNumLabel.text())
         self.gotoLoginPage()
 
