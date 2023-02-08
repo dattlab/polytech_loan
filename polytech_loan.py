@@ -83,9 +83,9 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.updateApplyPage2()
                 self.stackedWidget.setCurrentWidget(self.applyPage2)
             else:
-                applyRejectedDialog().raiseError()
+                applyRejectedDialog().exec()
         else:
-            errorInputDialog().raiseError()
+            errorInputDialog().exec()
 
     def updateType(self):
         if 1.50 < float(self.gwaApplyInput.text()) <= 1.75:
@@ -138,9 +138,9 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.renderSummary()
                 self.stackedWidget.setCurrentWidget(self.summaryPage)
             else:
-                exceedMaxError().raiseError()
+                exceedMaxError().exec()
         else:
-            errorInputDialog().raiseError()
+            errorInputDialog().exec()
 
     def gotoLoginPage(self) -> None:
         self.clearLoginInput()
