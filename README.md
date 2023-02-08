@@ -10,7 +10,6 @@ You can check the default python version installed in your machine by opening te
 ```
 python --version
 ```
-* Install interface font: [Atkinson Hyperlegible](https://brailleinstitute.org/freefont)
 
 ### Installing packages
 * Open terminal in any directory you like
@@ -55,3 +54,7 @@ python --version
 	```
 	(venv) C:\Users\YourUsername\...\polytech_loan> pyrcc5 .\ui\resources\xxxx.qrc -o .\ui\resources\xxxx_rc.py
 	```
+
+## Compile
+
+Install `pyinstaller` package and run `pyinstaller polytech_loan.spec`. The binary file will be stored in `dist` directory.
