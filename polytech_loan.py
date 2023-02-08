@@ -36,36 +36,25 @@ class Window(QMainWindow, Ui_MainWindow):
         name = self.nameLineEdit.text()
         email = self.emailLineEdit.text()
         studentNum = self.studentNumLineEdit.text()
-        if isNotEmpty(name, email, studentNum):
-            if isValidEmail(email):
-                self.checkCredentials(name, email, studentNum)
-            else:
-                invalidEmailError().raiseError()
-                return
-        else:
-            errorInputDialog().raiseError()
-
-    def checkCredentials(self, name, email, studentNum) -> None:
         college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
-        if os.path.exists(DATA_FILE) and isInDB(studentNum):
-            if validCredentials(studentNum, ("name", name), ("email", email), ("college", college), ("course", course)):
-                if noLoan(studentNum):
-                    self.renderInfoHeader()
-                    self.gotoEmptyDashboard()
-                else:
-                    self.nameLabel_2.setText(name)
-                    self.studentNumLabel_2.setText(studentNum)
-                    self.courseLabel_2.setText(course)
-                    self.renderDashboardStat()
-                    self.gotoDashboard()
+        if isNotEmpty(name, email, studentNum) and isValidEmail(email):
+            if os.path.exists(DATA_FILE) and isInDB(studentNum):
+                if validCredentials(studentNum, ("name", name), ("email", email), ("college", college),
+                                    ("course", course)) and noLoan(studentNum):
+                    if noLoan(studentNum):
+                        self.renderInfoHeader()
+                        self.gotoEmptyDashboard()
+                    else:
+                        self.nameLabel_2.setText(name)
+                        self.studentNumLabel_2.setText(studentNum)
+                        self.courseLabel_2.setText(course)
+                        self.renderDashboardStat()
+                        self.gotoDashboard()
             else:
-                invalidCred = invalidCredentials()
-                invalidCred.exec()
-        else:
-            self.renderInfoHeader()
-            storeInDB(name, email, studentNum, college, course)
-            self.gotoEmptyDashboard()
+                self.renderInfoHeader()
+                storeInDB(name, email, studentNum, college, course)
+                self.gotoEmptyDashboard()
 
     def gotoEmptyDashboard(self) -> None:
         self.stackedWidget.setCurrentWidget(self.noLoanPage)
