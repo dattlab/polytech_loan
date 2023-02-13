@@ -2,7 +2,6 @@ import getpass
 import sys
 import os
 
-
 # DATA FILE PATH
 USER_NAME = getpass.getuser()
 if os.name == "nt":

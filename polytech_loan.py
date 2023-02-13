@@ -14,6 +14,7 @@ class Window(QMainWindow, Ui_MainWindow):
     """
     Controller of Main Window UI
     """
+
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
