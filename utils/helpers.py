@@ -79,7 +79,7 @@ def storeInDB(*args):
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
             existing_data = json.load(f)
-        existing_data[args[2]] = newAccount[args[2]]
+        existing_data[args[3]] = newAccount[args[3]]
         write_json(existing_data)
     else:
         write_json(newAccount)
