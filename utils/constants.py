@@ -23,6 +23,7 @@ APPLY_REJECTED_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "../ui/apply
 EXCEED_MAX_AMOUNT_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "../ui/exceed_max_amount_dialog.ui"))
 INVALID_EMAIL_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "../ui/invalid_email_dialog.ui"))
 INVALID_CRED_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "../ui/invalid_cred_dialog.ui"))
+WRONG_PASSWD_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "../ui/wrong_passwd_dialog.ui"))
 
 INTERFACE_FONT = "Helvetica"
 BG_MAROON_0 = "rgb(91, 6, 22)"
