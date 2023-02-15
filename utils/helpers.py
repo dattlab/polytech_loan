@@ -56,8 +56,9 @@ def storeInDB(*args):
         args[2]: {
             "name": args[0],
             "email": args[1],
-            "college": args[3],
-            "course": args[4],
+            "passwd": args[2],
+            "college": args[4],
+            "course": args[5],
             "gwa": None,
             "honor": None,
             "loanAmount": None,
