@@ -59,7 +59,7 @@ def hash_str(s):
 def storeInDB(*args):
     passwd = hash_str(args[2].encode("utf-8"))
     newAccount = {
-        args[2]: {
+        args[3]: {
             "name": args[0],
             "email": args[1],
             "passwd": passwd,

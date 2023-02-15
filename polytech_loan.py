@@ -55,7 +55,7 @@ class Window(QMainWindow, Ui_MainWindow):
                         self.gotoDashboard()
             else:
                 self.renderInfoHeader()
-                storeInDB(name, email, studentNum, college, course)
+                storeInDB(name, email, passwd, studentNum, college, course)
                 self.gotoEmptyDashboard()
 
     def gotoEmptyDashboard(self) -> None:
