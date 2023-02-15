@@ -18,6 +18,7 @@ class Window(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
+        self.setWindowTitle("Polytech-Loan")
 
         self.passwdLineEdit.setEchoMode(QLineEdit.Password)
 
