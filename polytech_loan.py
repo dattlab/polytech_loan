@@ -36,13 +36,14 @@ class Window(QMainWindow, Ui_MainWindow):
     def gotoMainPage(self) -> None:
         name = self.nameLineEdit.text()
         email = self.emailLineEdit.text()
+        passwd = self.passwdLineEdit.text()
         studentNum = self.studentNumLineEdit.text()
         college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
         if isNotEmpty(name, email, studentNum) and isValidEmail(email):
             if os.path.exists(DATA_FILE) and isInDB(studentNum):
-                if validCredentials(studentNum, ("name", name), ("email", email), ("college", college),
-                                    ("course", course)):
+                if validCredentials(studentNum, ("name", name), ("email", email), ("passwd", passwd),
+                                    ("college", college), ("course", course)):
                     if noLoan(studentNum):
                         self.renderInfoHeader()
                         self.gotoEmptyDashboard()
