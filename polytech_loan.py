@@ -161,6 +161,7 @@ class Window(QMainWindow, Ui_MainWindow):
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
         data = data[self.studentNumLineEdit.text()]
+        self.statusLabel.setText("Pending")
         self.gwaDisplay.setText(str(data["gwa"]))
         self.honorDisplay.setText(data["honor"])
         self.loanAmountDisplay.setText(str(data["loanAmount"]))
