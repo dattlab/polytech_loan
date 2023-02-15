@@ -15,6 +15,7 @@ a = Analysis(
         ("ui/exceed_max_amount_dialog.ui", "."),
         ("ui/invalid_cred_dialog.ui", "."),
         ("ui/invalid_email_dialog.ui", "."),
+        ("ui/wrong_passwd_dialog.ui", ".")
     ],
     hiddenimports=[],
     hookspath=[],
