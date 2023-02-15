@@ -1,3 +1,4 @@
+import bcrypt
 import json
 import os
 
@@ -49,6 +50,10 @@ def createPdf(filePath, studentNumber):
 def write_json(newData):
     with open(DATA_FILE, "w") as f:
         json.dump(newData, f, indent=4, separators=(",", ": "), sort_keys=True)
+
+
+def hash_str(s):
+    return bcrypt.hashpw(s, bcrypt.gensalt()).decode("utf-8").replace("'", '"')
 
 
 def storeInDB(*args):
