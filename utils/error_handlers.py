@@ -39,14 +39,15 @@ def validCredentials(studentNumber, *args):
         userInput = a[1]
         existingData = accounts[studentNumber][a[0]]
         if a[0] == "passwd":
-            userInput = userInput.get().encode("utf-8")
-            existingData = existingData.get().encode("utf-8")
+            userInput = userInput.encode("utf-8")
+            existingData = existingData.encode("utf-8")
             if not bcrypt.checkpw(userInput, existingData):
                 wrongPasswd().exec()
                 return False
-        if userInput != existingData:
-            invalidCredentials().exec()
-            return False
+        else:
+            if userInput != existingData:
+                invalidCredentials().exec()
+                return False
     return True
 
 
