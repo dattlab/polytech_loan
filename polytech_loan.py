@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QFileDialog
+    QApplication, QMainWindow, QFileDialog, QLineEdit
 )
 
 from ui.main_window_ui import Ui_MainWindow
@@ -18,6 +18,9 @@ class Window(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
+
+        self.passwdLineEdit.setEchoMode(QLineEdit.Password)
+
         self.loginBtn.clicked.connect(self.gotoMainPage)
         self.logOutBtn.clicked.connect(self.gotoLoginPage)
         self.logOutBtn_2.clicked.connect(self.gotoLoginPage)
@@ -36,13 +39,14 @@ class Window(QMainWindow, Ui_MainWindow):
     def gotoMainPage(self) -> None:
         name = self.nameLineEdit.text()
         email = self.emailLineEdit.text()
+        passwd = self.passwdLineEdit.text()
         studentNum = self.studentNumLineEdit.text()
         college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
         if isNotEmpty(name, email, studentNum) and isValidEmail(email):
             if os.path.exists(DATA_FILE) and isInDB(studentNum):
-                if validCredentials(studentNum, ("name", name), ("email", email), ("college", college),
-                                    ("course", course)):
+                if validCredentials(studentNum, ("name", name), ("email", email), ("passwd", passwd),
+                                    ("college", college), ("course", course)):
                     if noLoan(studentNum):
                         self.renderInfoHeader()
                         self.gotoEmptyDashboard()
@@ -54,7 +58,7 @@ class Window(QMainWindow, Ui_MainWindow):
                         self.gotoDashboard()
             else:
                 self.renderInfoHeader()
-                storeInDB(name, email, studentNum, college, course)
+                storeInDB(name, email, passwd, studentNum, college, course)
                 self.gotoEmptyDashboard()
 
     def gotoEmptyDashboard(self) -> None:
@@ -151,11 +155,13 @@ class Window(QMainWindow, Ui_MainWindow):
         self.nameLineEdit.setText("")
         self.emailLineEdit.setText("")
         self.studentNumLineEdit.setText("")
+        self.passwdLineEdit.setText("")
 
     def renderDashboardStat(self) -> None:
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
         data = data[self.studentNumLineEdit.text()]
+        self.statusLabel.setText("Pending")
         self.gwaDisplay.setText(str(data["gwa"]))
         self.honorDisplay.setText(data["honor"])
         self.loanAmountDisplay.setText(str(data["loanAmount"]))

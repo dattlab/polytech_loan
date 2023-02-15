@@ -1,3 +1,4 @@
+import bcrypt
 import json
 import os
 
@@ -51,12 +52,17 @@ def write_json(newData):
         json.dump(newData, f, indent=4, separators=(",", ": "), sort_keys=True)
 
 
+def hash_str(s):
+    return bcrypt.hashpw(s, bcrypt.gensalt()).decode("utf-8").replace("'", '"')
+
+
 def storeInDB(*args):
+    passwd = hash_str(args[2].encode("utf-8"))
     newAccount = {
-        args[2]: {
+        args[3]: {
             "name": args[0],
             "email": args[1],
-            "passwd": args[2],
+            "passwd": passwd,
             "college": args[4],
             "course": args[5],
             "gwa": None,

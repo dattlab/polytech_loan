@@ -1,9 +1,10 @@
+import bcrypt
 import json
 import os.path
 import re
 
 from utils.constants import DATA_FILE
-from ui.dialogs_ui import invalidEmailError, invalidCredentials
+from ui.dialogs_ui import invalidEmailError, invalidCredentials, wrongPasswd
 
 
 def isNotEmpty(*args):
@@ -35,9 +36,18 @@ def validCredentials(studentNumber, *args):
     with open(DATA_FILE, "r") as f:
         accounts = json.load(f)
     for a in args:
-        if accounts[studentNumber][a[0]] != a[1]:
-            invalidCredentials().exec()
-            return False
+        userInput = a[1]
+        existingData = accounts[studentNumber][a[0]]
+        if a[0] == "passwd":
+            userInput = userInput.encode("utf-8")
+            existingData = existingData.encode("utf-8")
+            if not bcrypt.checkpw(userInput, existingData):
+                wrongPasswd().exec()
+                return False
+        else:
+            if userInput != existingData:
+                invalidCredentials().exec()
+                return False
     return True
 
 
