@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QFileDialog
+    QApplication, QMainWindow, QFileDialog, QLineEdit
 )
 
 from ui.main_window_ui import Ui_MainWindow
@@ -18,6 +18,9 @@ class Window(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
+
+        self.passwdLineEdit.setEchoMode(QLineEdit.Password)
+
         self.loginBtn.clicked.connect(self.gotoMainPage)
         self.logOutBtn.clicked.connect(self.gotoLoginPage)
         self.logOutBtn_2.clicked.connect(self.gotoLoginPage)
