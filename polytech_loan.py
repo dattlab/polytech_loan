@@ -152,6 +152,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.nameLineEdit.setText("")
         self.emailLineEdit.setText("")
         self.studentNumLineEdit.setText("")
+        self.passwdLineEdit.setText("")
 
     def renderDashboardStat(self) -> None:
         with open(DATA_FILE, "r") as f:
