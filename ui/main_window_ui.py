@@ -10,6 +10,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import ui.resources.applogo_rc
+import ui.resources.puplogo_rc
+
 from utils.constants import (
     INTERFACE_FONT,
     BG_MAROON_0,
