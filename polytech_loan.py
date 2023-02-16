@@ -1,11 +1,9 @@
-import sys
-
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QFileDialog, QLineEdit
 )
 
-from ui.main_window_ui import Ui_MainWindow
 from ui.dialogs_ui import *
+from ui.main_window_ui import Ui_MainWindow
 from utils.error_handlers import *
 from utils.helpers import *
 
@@ -41,25 +39,32 @@ class Window(QMainWindow, Ui_MainWindow):
         name = self.nameLineEdit.text()
         email = self.emailLineEdit.text()
         passwd = self.passwdLineEdit.text()
-        studentNum = self.studentNumLineEdit.text()
+        studentNumber = self.studentNumLineEdit.text()
         college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
-        if isNotEmpty(name, email, studentNum) and isValidEmail(email):
-            if os.path.exists(DATA_FILE) and isInDB(studentNum):
-                if validCredentials(studentNum, ("name", name), ("email", email), ("passwd", passwd),
-                                    ("college", college), ("course", course)):
-                    if noLoan(studentNum):
+        if isNotEmpty(name, email, studentNumber) and isValidEmail(email):
+            if os.path.exists(DATA_FILE) and isInDB(studentNumber):
+                if validCredentials(studentNumber, name, email, passwd,
+                                    college, course):
+                    if noLoan(studentNumber):
                         self.renderInfoHeader()
                         self.gotoEmptyDashboard()
                     else:
                         self.nameLabel_2.setText(name)
-                        self.studentNumLabel_2.setText(studentNum)
+                        self.studentNumLabel_2.setText(studentNumber)
                         self.courseLabel_2.setText(course)
-                        self.renderDashboardStat()
+
+                        DB_CURSOR.execute(f"""SELECT * FROM students
+                                                WHERE student_number = '{studentNumber}'
+                                            """)
+                        data = DB_CURSOR.fetchall()[0]
+                        DB_CONNECT.commit()
+
+                        self.renderDashboardStat(data)
                         self.gotoDashboard()
             else:
                 self.renderInfoHeader()
-                storeInDB(name, email, passwd, studentNum, college, course)
+                storeInDB(name, email, studentNumber, passwd, college, course)
                 self.gotoEmptyDashboard()
 
     def gotoEmptyDashboard(self) -> None:
@@ -78,13 +83,6 @@ class Window(QMainWindow, Ui_MainWindow):
         loanPurpose = self.loanPurposeInput.text()
         if isNotEmpty(gwa, loanPurpose):
             if isFloat(gwa) and gwaAccepted(float(gwa)):
-                gwa = float(gwa)
-                updateDB(
-                    self.studentNumLabel.text(),
-                    ("gwa", gwa),
-                    ("loanPurpose", loanPurpose),
-                    ("honor", determineHonor(gwa))
-                )
                 self.updateType()
                 self.updateApplyPage2()
                 self.stackedWidget.setCurrentWidget(self.applyPage2)
@@ -132,14 +130,18 @@ class Window(QMainWindow, Ui_MainWindow):
                 interestAmount = desiredAmount * interestRate
                 totalDebt = desiredAmount + interestAmount
                 monthlyPayment = round(totalDebt / paymentDuration, 2)
-                updateDB(
+                gwa = float(self.gwaApplyInput.text())
+                updateLoanDetails(
                     self.studentNumLabel.text(),
-                    ("loanAmount", desiredAmount),
-                    ("interestAmount", interestAmount),
-                    ("paymentDuration", f"{paymentDuration} months"),
-                    ("totalDebt", totalDebt),
-                    ("monthlyPayment", monthlyPayment),
-                    ("paymentMode", self.paymentMethodInput.currentText())
+                    gwa, determineHonor(gwa),
+                    desiredAmount,
+                    interestAmount,
+                    paymentDuration,
+                    totalDebt,
+                    monthlyPayment,
+                    self.paymentMethodInput.currentText(),
+                    self.loanPurposeInput.text(),
+                    'Pending'
                 )
                 self.renderSummary()
                 self.stackedWidget.setCurrentWidget(self.summaryPage)
@@ -158,39 +160,42 @@ class Window(QMainWindow, Ui_MainWindow):
         self.studentNumLineEdit.setText("")
         self.passwdLineEdit.setText("")
 
-    def renderDashboardStat(self) -> None:
-        with open(DATA_FILE, "r") as f:
-            data = json.load(f)
-        data = data[self.studentNumLineEdit.text()]
-        self.statusLabel.setText("Pending")
-        self.gwaDisplay.setText(str(data["gwa"]))
-        self.honorDisplay.setText(data["honor"])
-        self.loanAmountDisplay.setText(str(data["loanAmount"]))
-        self.interestAmountDisplay.setText(str(data["interestAmount"]))
-        self.paymentDurationDisplay_2.setText(str(data["paymentDuration"]))
-        self.totalDebtDisplay.setText(str(data["totalDebt"]))
-        self.monthPaymentDisplay.setText(str(data["monthlyPayment"]))
-        self.modePaymentDisplay.setText(data["paymentMode"])
-        self.purposeDisplay.setText(data["loanPurpose"])
+    def renderDashboardStat(self, data) -> None:
+        self.statusLabel.setText(data[15])
+        self.gwaDisplay.setText(str(data[6]))
+        self.honorDisplay.setText(data[7])
+        self.loanAmountDisplay.setText(str(data[8]))
+        self.interestAmountDisplay.setText(str(data[9]))
+        self.paymentDurationDisplay_2.setText(str(data[10]))
+        self.totalDebtDisplay.setText(str(data[11]))
+        self.monthPaymentDisplay.setText(str(data[12]))
+        self.modePaymentDisplay.setText(data[13])
+        self.purposeDisplay.setText(data[14])
 
     def renderSummary(self) -> None:
-        with open(DATA_FILE, "r") as f:
-            data = json.load(f)
-        data = data[self.studentNumLabel.text()]
-        self.nameSummDisplay.setText(data["name"])
-        self.emailSummDisplay.setText(data["email"])
-        self.studentNumSummDisplay.setText(self.studentNumLabel.text())
-        self.collegeSummDisplay.setText(data["college"])
-        self.courseSummDisplay.setText(data["course"])
-        self.gwaSummDisplay.setText(str(data["gwa"]))
-        self.honorSummDisplay.setText(data["honor"])
-        self.loanAmountSummDisplay.setText(str(data["loanAmount"]))
-        self.interestAmountSummDisplay.setText(str(data["interestAmount"]))
-        self.paymentDurationSummDisplay.setText(str(data["paymentDuration"]))
-        self.totalDebtSummDisplay.setText(str(data["totalDebt"]))
-        self.monthPaymentSummDisplay.setText(str(data["monthlyPayment"]))
-        self.modePaymentSummDisplay.setText(data["paymentMode"])
-        self.purposeSummDisplay.setText(data["loanPurpose"])
+        studentNumber = self.studentNumLabel.text()
+        DB_CURSOR.execute(f"""SELECT * FROM students
+                WHERE student_number = '{studentNumber}'
+            """)
+
+        data = DB_CURSOR.fetchall()[0]
+
+        DB_CONNECT.commit()
+
+        self.nameSummDisplay.setText(data[0])
+        self.emailSummDisplay.setText(data[1])
+        self.studentNumSummDisplay.setText(data[2])
+        self.collegeSummDisplay.setText(data[4])
+        self.courseSummDisplay.setText(data[5])
+        self.gwaSummDisplay.setText(str(data[6]))
+        self.honorSummDisplay.setText(data[7])
+        self.loanAmountSummDisplay.setText(str(data[8]))
+        self.interestAmountSummDisplay.setText(str(data[9]))
+        self.paymentDurationSummDisplay.setText(str(data[10]))
+        self.totalDebtSummDisplay.setText(str(data[11]))
+        self.monthPaymentSummDisplay.setText(str(data[12]))
+        self.modePaymentSummDisplay.setText(data[13])
+        self.purposeSummDisplay.setText(data[14])
 
     def saveToPdf(self) -> None:
         options = QFileDialog.Options()
@@ -208,7 +213,9 @@ def main() -> None:
     app = QApplication(sys.argv)
     win = Window()
     win.show()
-    sys.exit(app.exec())
+    appStart = app.exec()
+    DB_CONNECT.close()
+    sys.exit(appStart)
 
 
 if __name__ == '__main__':
