@@ -1,10 +1,7 @@
-import bcrypt
-import json
-import os.path
 import re
 
-from utils.constants import DATA_FILE
-from ui.dialogs_ui import invalidEmailError, invalidCredentials, wrongPasswd
+from utils.helpers import DB_CONNECT, DB_CURSOR
+from ui.dialogs_ui import invalidEmailError, invalidCredentials
 
 
 def isNotEmpty(*args):
@@ -15,40 +12,44 @@ def isNotEmpty(*args):
 
 
 def isInDB(studentNumber):
-    with open(DATA_FILE, "r") as f:
-        accounts = json.load(f)
-    if studentNumber in accounts:
-        return True
-    return False
+    DB_CURSOR.execute(f"""SELECT COUNT(1) FROM students
+    		WHERE student_number = '{studentNumber}'
+    	""")
+
+    res = DB_CURSOR.fetchall()[0][0]
+
+    DB_CONNECT.commit()
+
+    return True if res else False
 
 
 def noLoan(studentNumber):
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, "r") as f:
-            data = json.load(f)
-        if data[studentNumber]["loanAmount"] is None:
-            return True
-        return False
-    return True
+    DB_CURSOR.execute(f"""SELECT COUNT(1) FROM students
+    		WHERE student_number = '{studentNumber}'
+    		AND loan_amount = 0.0
+    	""")
+
+    res = DB_CURSOR.fetchall()[0][0]
+
+    DB_CONNECT.commit()
+
+    return True if res else False
 
 
 def validCredentials(studentNumber, *args):
-    with open(DATA_FILE, "r") as f:
-        accounts = json.load(f)
-    for a in args:
-        userInput = a[1]
-        existingData = accounts[studentNumber][a[0]]
-        if a[0] == "passwd":
-            userInput = userInput.encode("utf-8")
-            existingData = existingData.encode("utf-8")
-            if not bcrypt.checkpw(userInput, existingData):
-                wrongPasswd().exec()
-                return False
-        else:
-            if userInput != existingData:
-                invalidCredentials().exec()
-                return False
-    return True
+    DB_CURSOR.execute(f"""SELECT COUNT(1) FROM students
+    		WHERE student_number = '{studentNumber}'
+    		AND (name, email, passwd, college, course) = (?,?,?,?,?)
+    	""", args)
+
+    res = DB_CURSOR.fetchall()[0][0]
+
+    DB_CONNECT.commit()
+
+    if res:
+        return True
+    invalidCredentials().exec()
+    return False
 
 
 def gwaAccepted(gwa):
