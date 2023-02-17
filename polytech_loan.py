@@ -29,7 +29,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.applyCancelBtn_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage))
         self.applyConfirmBtn.clicked.connect(self.gotoSummaryPage)
         self.applyCancelBtn_3.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage2))
-        self.applyConfirmBtn_3.clicked.connect(lambda: self.raisApplySuccess())
+        self.applyConfirmBtn_3.clicked.connect(lambda: self.raiseApplySuccess())
         self.applySaveCopyBtn.clicked.connect(self.saveToPdf)
 
         self.paymentDurationInput.currentTextChanged.connect(self.updateApplyPage2)
@@ -205,7 +205,7 @@ class Window(QMainWindow, Ui_MainWindow):
         createPdf(filePath, self.studentNumLabel.text())
         self.gotoLoginPage()
 
-    def raisApplySuccess(self) -> None:
+    def raiseApplySuccess(self) -> None:
         applySuccessDialog().exec()
         self.gotoLoginPage()
 
