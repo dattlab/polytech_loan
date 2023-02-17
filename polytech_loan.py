@@ -1,6 +1,4 @@
-from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QFileDialog, QLineEdit
-)
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QLineEdit
 
 from ui.dialogs_ui import *
 from ui.main_window_ui import Ui_MainWindow
@@ -23,13 +21,21 @@ class Window(QMainWindow, Ui_MainWindow):
         self.loginBtn.clicked.connect(self.gotoMainPage)
         self.logOutBtn.clicked.connect(self.gotoLoginPage)
         self.logOutBtn_2.clicked.connect(self.gotoLoginPage)
-        self.applyBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage))
-        self.applyCancelBtn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.noLoanPage))
+        self.applyBtn.clicked.connect(
+            lambda: self.stackedWidget.setCurrentWidget(self.applyPage)
+        )
+        self.applyCancelBtn.clicked.connect(
+            lambda: self.stackedWidget.setCurrentWidget(self.noLoanPage)
+        )
         self.applyBtn_2.clicked.connect(self.gotoApplyPage2)
-        self.applyCancelBtn_2.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage))
+        self.applyCancelBtn_2.clicked.connect(
+            lambda: self.stackedWidget.setCurrentWidget(self.applyPage)
+        )
         self.applyConfirmBtn.clicked.connect(self.gotoSummaryPage)
-        self.applyCancelBtn_3.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.applyPage2))
-        self.applyConfirmBtn_3.clicked.connect(lambda: self.raisApplySuccess())
+        self.applyCancelBtn_3.clicked.connect(
+            lambda: self.stackedWidget.setCurrentWidget(self.applyPage2)
+        )
+        self.applyConfirmBtn_3.clicked.connect(lambda: self.raiseApplySuccess())
         self.applySaveCopyBtn.clicked.connect(self.saveToPdf)
 
         self.paymentDurationInput.currentTextChanged.connect(self.updateApplyPage2)
@@ -42,11 +48,15 @@ class Window(QMainWindow, Ui_MainWindow):
         studentNumber = self.studentNumLineEdit.text()
         college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
-        if isNotEmpty(name, email, studentNumber) and isValidEmail(email) and \
-                isValidStudentNum(studentNumber):
+        if (
+            isNotEmpty(name, email, studentNumber)
+            and isValidEmail(email)
+            and isValidStudentNum(studentNumber)
+        ):
             if os.path.exists(DATA_FILE) and isInDB(studentNumber):
-                if validCredentials(studentNumber, name, email, passwd,
-                                    college, course):
+                if validCredentials(
+                    studentNumber, name, email, passwd, college, course
+                ):
                     if noLoan(studentNumber):
                         self.renderInfoHeader()
                         self.gotoEmptyDashboard()
@@ -55,9 +65,11 @@ class Window(QMainWindow, Ui_MainWindow):
                         self.studentNumLabel_2.setText(studentNumber)
                         self.courseLabel_2.setText(course)
 
-                        DB_CURSOR.execute(f"""SELECT * FROM students
+                        DB_CURSOR.execute(
+                            f"""SELECT * FROM students
                                                 WHERE student_number = '{studentNumber}'
-                                            """)
+                                            """
+                        )
                         data = DB_CURSOR.fetchall()[0]
                         DB_CONNECT.commit()
 
@@ -134,7 +146,8 @@ class Window(QMainWindow, Ui_MainWindow):
                 gwa = float(self.gwaApplyInput.text())
                 updateLoanDetails(
                     self.studentNumLabel.text(),
-                    gwa, determineHonor(gwa),
+                    gwa,
+                    determineHonor(gwa),
                     desiredAmount,
                     interestAmount,
                     paymentDuration,
@@ -142,7 +155,7 @@ class Window(QMainWindow, Ui_MainWindow):
                     monthlyPayment,
                     self.paymentMethodInput.currentText(),
                     self.loanPurposeInput.text(),
-                    'Pending'
+                    "Pending",
                 )
                 self.renderSummary()
                 self.stackedWidget.setCurrentWidget(self.summaryPage)
@@ -175,9 +188,11 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def renderSummary(self) -> None:
         studentNumber = self.studentNumLabel.text()
-        DB_CURSOR.execute(f"""SELECT * FROM students
+        DB_CURSOR.execute(
+            f"""SELECT * FROM students
                 WHERE student_number = '{studentNumber}'
-            """)
+            """
+        )
 
         data = DB_CURSOR.fetchall()[0]
 
@@ -201,11 +216,13 @@ class Window(QMainWindow, Ui_MainWindow):
     def saveToPdf(self) -> None:
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        filePath, _ = QFileDialog.getSaveFileName(None, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options)
+        filePath, _ = QFileDialog.getSaveFileName(
+            None, "Save Copy", "loan_summary.pdf", "PDF (*.pdf)", options=options
+        )
         createPdf(filePath, self.studentNumLabel.text())
         self.gotoLoginPage()
 
-    def raisApplySuccess(self) -> None:
+    def raiseApplySuccess(self) -> None:
         applySuccessDialog().exec()
         self.gotoLoginPage()
 
@@ -219,5 +236,5 @@ def main() -> None:
     sys.exit(appStart)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
