@@ -1,11 +1,11 @@
 import re
 
-from utils.helpers import DB_CONNECT, DB_CURSOR
 from ui.dialogs_ui import (
     invalidEmailError,
     invalidCredentials,
     invalidStudentNumError
 )
+from utils.helpers import DB_CONNECT, DB_CURSOR
 
 
 def isNotEmpty(*args):

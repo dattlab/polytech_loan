@@ -1,6 +1,6 @@
 import getpass
-import sys
 import os
+import sys
 
 # DATA FILE PATH
 USER_NAME = getpass.getuser()
