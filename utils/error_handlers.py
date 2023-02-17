@@ -1,10 +1,6 @@
 import re
 
-from ui.dialogs_ui import (
-    invalidEmailError,
-    invalidCredentials,
-    invalidStudentNumError
-)
+from ui.dialogs_ui import invalidEmailError, invalidCredentials, invalidStudentNumError
 from utils.helpers import DB_CONNECT, DB_CURSOR
 
 
@@ -16,9 +12,11 @@ def isNotEmpty(*args):
 
 
 def isInDB(studentNumber):
-    DB_CURSOR.execute(f"""SELECT COUNT(1) FROM students
+    DB_CURSOR.execute(
+        f"""SELECT COUNT(1) FROM students
     		WHERE student_number = '{studentNumber}'
-    	""")
+    	"""
+    )
 
     res = DB_CURSOR.fetchall()[0][0]
 
@@ -28,10 +26,12 @@ def isInDB(studentNumber):
 
 
 def noLoan(studentNumber):
-    DB_CURSOR.execute(f"""SELECT COUNT(1) FROM students
+    DB_CURSOR.execute(
+        f"""SELECT COUNT(1) FROM students
     		WHERE student_number = '{studentNumber}'
     		AND loan_amount = 0.0
-    	""")
+    	"""
+    )
 
     res = DB_CURSOR.fetchall()[0][0]
 
@@ -41,10 +41,13 @@ def noLoan(studentNumber):
 
 
 def validCredentials(studentNumber, *args):
-    DB_CURSOR.execute(f"""SELECT COUNT(1) FROM students
+    DB_CURSOR.execute(
+        f"""SELECT COUNT(1) FROM students
     		WHERE student_number = '{studentNumber}'
     		AND (name, email, passwd, college, course) = (?,?,?,?,?)
-    	""", args)
+    	""",
+        args,
+    )
 
     res = DB_CURSOR.fetchall()[0][0]
 
@@ -71,7 +74,7 @@ def isFloat(userInput):
 
 
 def isValidEmail(email):
-    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
     if re.fullmatch(regex, email):
         return True
     invalidEmailError().exec()
@@ -79,7 +82,7 @@ def isValidEmail(email):
 
 
 def isValidStudentNum(studentNumber):
-    regex = r'20\d{2}-\d{5}-MN-0'
+    regex = r"20\d{2}-\d{5}-MN-0"
     if re.fullmatch(regex, studentNumber):
         return True
     invalidStudentNumError().exec()
