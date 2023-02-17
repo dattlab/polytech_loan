@@ -1,3 +1,9 @@
+# Polytech-Loan
+
+> Project for COMP 20073
+
+Prototype software for managing PUP student loans.
+
 ## Build
 
 ### Requirements
@@ -62,7 +68,7 @@ python --version
   (venv) C:\Users\YourUsername\...\polytech_loan> pyrcc5 .\ui\resources\xxxx.qrc -o .\ui\resources\xxxx_rc.py
   ```
 
-## Compile
+### Compiling into `.exe`
 
-Install `pyinstaller` package and run `pyinstaller polytech_loan.spec`. The binary file will be stored in `dist`
+Checkout the `build` branch, install `pyinstaller` package and run `pyinstaller polytech_loan.spec`. The binary file will be stored in `dist`
 directory.
