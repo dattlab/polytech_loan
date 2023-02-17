@@ -22,6 +22,7 @@ APPLY_SUCCESS_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "apply_succes
 APPLY_REJECTED_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "apply_rejected_dialog.ui"))
 EXCEED_MAX_AMOUNT_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "exceed_max_amount_dialog.ui"))
 INVALID_EMAIL_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "invalid_email_dialog.ui"))
+INVALID_STUDENTNUM_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "invalid_studentnum_dialog.ui"))
 INVALID_CRED_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "invalid_cred_dialog.ui"))
 WRONG_PASSWD_DIALOG_UI = os.path.abspath(os.path.join(bundle_dir, "wrong_passwd_dialog.ui"))
 
