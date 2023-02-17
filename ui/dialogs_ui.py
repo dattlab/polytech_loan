@@ -58,3 +58,11 @@ class invalidEmailError(QDialog):
         loadUi(INVALID_EMAIL_DIALOG_UI, self)
         self.setWindowTitle("Input Error")
         self.pushButton.clicked.connect(self.close)
+
+
+class invalidStudentNumError(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        loadUi(INVALID_STUDENTNUM_DIALOG_UI, self)
+        self.setWindowTitle("Input Error")
+        self.pushButton.clicked.connect(self.close)

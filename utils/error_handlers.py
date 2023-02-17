@@ -1,7 +1,11 @@
 import re
 
 from utils.helpers import DB_CONNECT, DB_CURSOR
-from ui.dialogs_ui import invalidEmailError, invalidCredentials
+from ui.dialogs_ui import (
+    invalidEmailError,
+    invalidCredentials,
+    invalidStudentNumError
+)
 
 
 def isNotEmpty(*args):
@@ -71,4 +75,12 @@ def isValidEmail(email):
     if re.fullmatch(regex, email):
         return True
     invalidEmailError().exec()
+    return False
+
+
+def isValidStudentNum(studentNumber):
+    regex = r'20\d{2}-\d{5}-MN-0'
+    if re.fullmatch(regex, studentNumber):
+        return True
+    invalidStudentNumError().exec()
     return False

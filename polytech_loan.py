@@ -42,7 +42,8 @@ class Window(QMainWindow, Ui_MainWindow):
         studentNumber = self.studentNumLineEdit.text()
         college = self.collegeComboBox.currentText()
         course = self.courseComboBox.currentText()
-        if isNotEmpty(name, email, studentNumber) and isValidEmail(email):
+        if isNotEmpty(name, email, studentNumber) and isValidEmail(email) and \
+                isValidStudentNum(studentNumber):
             if os.path.exists(DATA_FILE) and isInDB(studentNumber):
                 if validCredentials(studentNumber, name, email, passwd,
                                     college, course):
