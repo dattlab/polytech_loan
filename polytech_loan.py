@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QLineEdit
 
+# Local Imports
 from ui.dialogs_ui import *
 from ui.main_window_ui import Ui_MainWindow
 from utils.error_handlers import *
