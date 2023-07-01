@@ -2,3 +2,5 @@ __pycache__/
 venv/
 .idea/
 data.json
+.autoenv.zsh
+.autoenv_leave.zsh
