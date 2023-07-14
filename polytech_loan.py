@@ -66,6 +66,7 @@ class Window(QMainWindow, Ui_MainWindow):
                         self.studentNumLabel_2.setText(studentNumber)
                         self.courseLabel_2.setText(course)
 
+                        # TODO: migrate to MSSQL
                         DB_CURSOR.execute(
                             f"""SELECT * FROM students
                                                 WHERE student_number = '{studentNumber}'
@@ -189,6 +190,8 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def renderSummary(self) -> None:
         studentNumber = self.studentNumLabel.text()
+
+        # TODO: migrate to MSSQL
         DB_CURSOR.execute(
             f"""SELECT * FROM students
                 WHERE student_number = '{studentNumber}'

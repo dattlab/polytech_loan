@@ -4,10 +4,14 @@ from fpdf import FPDF
 
 from utils.constants import INTERFACE_FONT, DATA_FILE
 
+# TODO: migrate to MSSQL
 DB_CONNECT = sqlite3.connect(DATA_FILE)
 DB_CURSOR = DB_CONNECT.cursor()
 
 DB_CURSOR.execute(
+    # TODO: create two tables:
+    #       - student
+    #       - loan
     """CREATE TABLE IF NOT EXISTS students (
     name text,
     email text,
@@ -93,6 +97,7 @@ def storeInDB(*args):
 
 
 def updateLoanDetails(studentNumber, *args):
+    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
         f"""UPDATE students
     		SET (
