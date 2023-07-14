@@ -32,7 +32,6 @@ DB_CURSOR.execute(
 )
 """
 )
-
 DB_CONNECT.commit()
 
 
@@ -47,14 +46,16 @@ def createPdf(filePath, studentNumber):
     pdf.set_font(INTERFACE_FONT, size=15)
     pdf.add_page()
 
+    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
         f"""SELECT * FROM students
         WHERE student_number = '{studentNumber}'
     """
     )
-
     data = DB_CURSOR.fetchall()[0]
 
+
+    # TODO: migrate to MSSQL
     pdf.multi_cell(
         200,
         10,
@@ -84,6 +85,7 @@ def createPdf(filePath, studentNumber):
 
 
 def storeInDB(*args):
+    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
         f"""INSERT INTO students
     		VALUES (

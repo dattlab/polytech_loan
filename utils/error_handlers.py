@@ -12,6 +12,7 @@ def isNotEmpty(*args):
 
 
 def isInDB(studentNumber):
+    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
         f"""SELECT COUNT(1) FROM students
     		WHERE student_number = '{studentNumber}'
@@ -26,6 +27,7 @@ def isInDB(studentNumber):
 
 
 def noLoan(studentNumber):
+    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
         f"""SELECT COUNT(1) FROM students
     		WHERE student_number = '{studentNumber}'
@@ -41,6 +43,7 @@ def noLoan(studentNumber):
 
 
 def validCredentials(studentNumber, *args):
+    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
         f"""SELECT COUNT(1) FROM students
     		WHERE student_number = '{studentNumber}'
