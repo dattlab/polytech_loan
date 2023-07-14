@@ -4,6 +4,7 @@ defusedxml==0.7.1
 fonttools==4.41.0
 fpdf2==2.7.4
 Pillow==10.0.0
+pyodbc==4.0.39
 PyQt5==5.15.9
 pyqt5-plugins==5.15.9.2.3
 PyQt5-Qt5==5.15.2
