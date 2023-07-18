@@ -12,44 +12,41 @@ def isNotEmpty(*args):
 
 
 def isInDB(studentNumber):
-    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
-        f"""SELECT COUNT(1) FROM students
-    		WHERE student_number = '{studentNumber}'
-    	"""
+        f"""SELECT COUNT(1) FROM student
+            WHERE student_number = '{studentNumber}'
+        """
     )
 
     res = DB_CURSOR.fetchall()[0][0]
 
-    DB_CONNECT.commit()
-
-    return True if res else False
+    return True if res == 1 else False
 
 
 def noLoan(studentNumber):
-    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
-        f"""SELECT COUNT(1) FROM students
-    		WHERE student_number = '{studentNumber}'
-    		AND loan_amount = 0.0
-    	"""
+        f"""SELECT COUNT(1) FROM loan
+            WHERE student_number = '{studentNumber}'
+        """
     )
 
     res = DB_CURSOR.fetchall()[0][0]
 
     DB_CONNECT.commit()
 
-    return True if res else False
+    return True if not res else False
 
 
 def validCredentials(studentNumber, *args):
-    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
-        f"""SELECT COUNT(1) FROM students
-    		WHERE student_number = '{studentNumber}'
-    		AND (name, email, passwd, college, course) = (?,?,?,?,?)
-    	""",
-        args,
+        f"""SELECT COUNT(1) FROM student
+            WHERE student_number = '{studentNumber}'
+            AND name = '{args[0]}'
+            AND email = '{args[1]}'
+            AND passwd = '{args[2]}'
+            AND college = '{args[3]}'
+            AND course = '{args[4]}'
+        """
     )
 
     res = DB_CURSOR.fetchall()[0][0]

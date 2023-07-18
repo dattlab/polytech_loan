@@ -54,7 +54,7 @@ class Window(QMainWindow, Ui_MainWindow):
             and isValidEmail(email)
             and isValidStudentNum(studentNumber)
         ):
-            if os.path.exists(DATA_FILE) and isInDB(studentNumber):
+            if isInDB(studentNumber):
                 if validCredentials(
                     studentNumber, name, email, passwd, college, course
                 ):
@@ -66,16 +66,21 @@ class Window(QMainWindow, Ui_MainWindow):
                         self.studentNumLabel_2.setText(studentNumber)
                         self.courseLabel_2.setText(course)
 
-                        # TODO: migrate to MSSQL
                         DB_CURSOR.execute(
-                            f"""SELECT * FROM students
-                                                WHERE student_number = '{studentNumber}'
-                                            """
+                            f"""SELECT * FROM student
+                                WHERE student_number = '{studentNumber}'
+                            """
                         )
-                        data = DB_CURSOR.fetchall()[0]
-                        DB_CONNECT.commit()
+                        dataUser = DB_CURSOR.fetchall()[0]
 
-                        self.renderDashboardStat(data)
+                        DB_CURSOR.execute(
+                            f"""SELECT * FROM loan
+                                WHERE student_number = '{studentNumber}'
+                            """
+                        )
+                        dataLoan = DB_CURSOR.fetchall()[0]
+
+                        self.renderDashboardStat(dataUser, dataLoan)
                         self.gotoDashboard()
             else:
                 self.renderInfoHeader()
@@ -176,46 +181,49 @@ class Window(QMainWindow, Ui_MainWindow):
         self.studentNumLineEdit.setText("")
         self.passwdLineEdit.setText("")
 
-    def renderDashboardStat(self, data) -> None:
-        self.statusLabel.setText(data[15])
-        self.gwaDisplay.setText(str(data[6]))
-        self.honorDisplay.setText(data[7])
-        self.loanAmountDisplay.setText(str(data[8]))
-        self.interestAmountDisplay.setText(str(data[9]))
-        self.paymentDurationDisplay_2.setText(str(data[10]))
-        self.totalDebtDisplay.setText(str(data[11]))
-        self.monthPaymentDisplay.setText(str(data[12]))
-        self.modePaymentDisplay.setText(data[13])
-        self.purposeDisplay.setText(data[14])
+    def renderDashboardStat(self, dataUser, dataLoan) -> None:
+        self.statusLabel.setText(dataLoan[8])
+        self.gwaDisplay.setText(str(dataUser[6]))
+        self.honorDisplay.setText(dataUser[7])
+        self.loanAmountDisplay.setText(str(dataLoan[1]))
+        self.interestAmountDisplay.setText(str(dataLoan[2]))
+        self.paymentDurationDisplay_2.setText(str(dataLoan[3]))
+        self.totalDebtDisplay.setText(str(dataLoan[4]))
+        self.monthPaymentDisplay.setText(str(dataLoan[5]))
+        self.modePaymentDisplay.setText(dataLoan[6])
+        self.purposeDisplay.setText(dataLoan[7])
 
     def renderSummary(self) -> None:
         studentNumber = self.studentNumLabel.text()
 
-        # TODO: migrate to MSSQL
         DB_CURSOR.execute(
-            f"""SELECT * FROM students
+            f"""SELECT * FROM student
                 WHERE student_number = '{studentNumber}'
             """
         )
+        dataUser = DB_CURSOR.fetchall()[0]
 
-        data = DB_CURSOR.fetchall()[0]
+        DB_CURSOR.execute(
+            f"""SELECT * FROM loan
+                WHERE student_number = '{studentNumber}'
+            """
+        )
+        dataLoan = DB_CURSOR.fetchall()[0]
 
-        DB_CONNECT.commit()
-
-        self.nameSummDisplay.setText(data[0])
-        self.emailSummDisplay.setText(data[1])
-        self.studentNumSummDisplay.setText(data[2])
-        self.collegeSummDisplay.setText(data[4])
-        self.courseSummDisplay.setText(data[5])
-        self.gwaSummDisplay.setText(str(data[6]))
-        self.honorSummDisplay.setText(data[7])
-        self.loanAmountSummDisplay.setText(str(data[8]))
-        self.interestAmountSummDisplay.setText(str(data[9]))
-        self.paymentDurationSummDisplay.setText(str(data[10]))
-        self.totalDebtSummDisplay.setText(str(data[11]))
-        self.monthPaymentSummDisplay.setText(str(data[12]))
-        self.modePaymentSummDisplay.setText(data[13])
-        self.purposeSummDisplay.setText(data[14])
+        self.nameSummDisplay.setText(dataUser[1])
+        self.emailSummDisplay.setText(dataUser[2])
+        self.studentNumSummDisplay.setText(dataUser[0])
+        self.collegeSummDisplay.setText(dataUser[4])
+        self.courseSummDisplay.setText(dataUser[5])
+        self.gwaSummDisplay.setText(str(dataUser[6]))
+        self.honorSummDisplay.setText(dataUser[7])
+        self.loanAmountSummDisplay.setText(str(dataLoan[1]))
+        self.interestAmountSummDisplay.setText(str(dataLoan[2]))
+        self.paymentDurationSummDisplay.setText(str(dataLoan[3]))
+        self.totalDebtSummDisplay.setText(str(dataLoan[4]))
+        self.monthPaymentSummDisplay.setText(str(dataLoan[5]))
+        self.modePaymentSummDisplay.setText(dataLoan[6])
+        self.purposeSummDisplay.setText(dataLoan[7])
 
     def saveToPdf(self) -> None:
         options = QFileDialog.Options()

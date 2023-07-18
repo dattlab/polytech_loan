@@ -18,12 +18,12 @@ DB_CURSOR.execute(
                    AND type in (N'U'))
         CREATE TABLE student (
             student_number NVARCHAR(15) NOT NULL,
-            name NVARCHAR(50) NOT NULL,
+            name NVARCHAR(100) NOT NULL,
             email NVARCHAR(50) NOT NULL,
             passwd NVARCHAR(50) NOT NULL,
-            college NVARCHAR(50) NOT NULL,
-            course NVARCHAR(50) NOT NULL,
-            gwa NUMERIC(3,2),
+            college NVARCHAR(MAX) NOT NULL,
+            course NVARCHAR(MAX) NOT NULL,
+            gwa REAL,
             honor NVARCHAR(50),
             
             CONSTRAINT PK_student_number PRIMARY KEY (student_number)
@@ -38,9 +38,9 @@ DB_CURSOR.execute(
             payment_duration SMALLINT,
             total_debt REAL,
             monthly_payment REAL,
-            payment_mode NVARCHAR(20),
-            loan_purpose TEXT,
-            loan_status TEXT
+            payment_mode NVARCHAR(MAX),
+            loan_purpose NVARCHAR(MAX),
+            loan_status NVARCHAR(MAX),
             
             CONSTRAINT PK_loan_student_number PRIMARY KEY (student_number),
             CONSTRAINT FK_loan_student_number FOREIGN KEY (student_number)
@@ -63,16 +63,17 @@ def createPdf(filePath, studentNumber):
     pdf.set_font(INTERFACE_FONT, size=15)
     pdf.add_page()
 
-    # TODO: migrate to MSSQL
     DB_CURSOR.execute(
-        f"""SELECT * FROM students
+        f"""
+        SELECT * FROM student
         WHERE student_number = '{studentNumber}'
-    """
+        """
     )
     data_user = DB_CURSOR.fetchall()[0]
 
     DB_CURSOR.execute(
-        f"""SELECT * FROM loan
+        f"""
+        SELECT * FROM loan
         WHERE student_number = '{studentNumber}'
         """
     )
@@ -118,11 +119,13 @@ def storeInDB(*args):
 
 
 def updateLoanDetails(studentNumber, *args):
+    honor = args[1].replace("'", "''")
     DB_CURSOR.execute(
         f"""
         UPDATE student
-        SET gwa = {args[0]}, honor = '{args[1]}'
-        WHERE student_number = '{studentNumber}'
+        SET gwa = {args[0]},
+            honor = '{honor}'
+        WHERE student_number = '{studentNumber}';
         """
     )
     DB_CONNECT.commit()
@@ -140,7 +143,7 @@ def updateLoanDetails(studentNumber, *args):
                 payment_mode = '{args[7]}',
                 loan_purpose = '{args[8]}',
                 loan_status = '{args[9]}'
-            WHERE student_number = '{studentNumber}';
+            WHERE student_number = '{studentNumber}'
         END
         ELSE
         BEGIN
@@ -151,7 +154,7 @@ def updateLoanDetails(studentNumber, *args):
             VALUES (
                 '{studentNumber}', {args[2]}, {args[3]}, {args[4]},
                 {args[5]}, {args[6]}, '{args[7]}', '{args[8]}', '{args[9]}'
-            );
+            )
         END
         """
     )
