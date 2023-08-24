@@ -6,7 +6,7 @@ from utils.constants import INTERFACE_FONT
 
 
 DB_CONNECT = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};'
-                            'Server=DATWIN\SQLEXPRESS;'
+                            'Server=;'
                             'Database=PolytechLoan;'
                             'Trusted_Connection=yes;')
 DB_CURSOR = DB_CONNECT.cursor()
@@ -90,7 +90,7 @@ def createPdf(filePath, studentNumber):
         + f"**Student Number:** {data_user[0]}\n"
         + f"**College:** {data_user[4]}\n"
         + f"**Course:** {data_user[5]}\n"
-        + f"**GWA:** {data_user[6]}\n"
+        + f"**GWA:** {round(data_user[6], 2)}\n"
         + f"**Honor:** {data_user[7]}\n\n"
         + "                                                   **Loan Details**\n"
         + f"**Status:** {data_loan[8].upper()}\n"
